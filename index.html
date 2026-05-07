@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prova APA — Clínica Médica | Saldo 2ª Chamada</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f0f4f8;
+    color: #1a1a1a;
+    min-height: 100vh;
+  }
+
+  header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+    color: white;
+    padding: 22px 30px;
+    text-align: center;
+  }
+  header h1 { font-size: 22px; margin-bottom: 5px; font-weight: 700; }
+  header p  { font-size: 13px; opacity: 0.85; }
+
+  .quiz-container {
+    max-width: 820px;
+    margin: 30px auto;
+    padding: 0 16px 80px;
+  }
+
+  /* ── Start Screen ─────────────────────────────────────── */
+  #startScreen {
+    background: white;
+    border-radius: 14px;
+    padding: 44px 40px;
+    text-align: center;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  }
+  #startScreen h2 { font-size: 22px; color: #1e3a5f; margin-bottom: 14px; }
+  #startScreen p  { font-size: 14px; color: #555; margin-bottom: 10px; line-height: 1.7; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 20px 0 28px; }
+  .tag {
+    background: #eef4ff; color: #2563eb;
+    border-radius: 20px; padding: 4px 12px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.3px;
+  }
+
+  /* ── Botões ───────────────────────────────────────────── */
+  .btn-primary {
+    background: #2563eb; color: white;
+    border: none; border-radius: 8px;
+    padding: 13px 34px; font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .btn-primary:hover { background: #1d4ed8; }
+  .btn-secondary {
+    background: #f1f5f9; color: #334155;
+    border: 1px solid #cbd5e1; border-radius: 8px;
+    padding: 11px 28px; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: background 0.2s; margin-top: 12px;
+  }
+  .btn-secondary:hover { background: #e2e8f0; }
+  .btn-confirm {
+    background: #1e3a5f; color: white;
+    border: none; border-radius: 8px;
+    padding: 13px 34px; font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: background 0.2s; margin-top: 20px;
+    display: block; width: 100%;
+  }
+  .btn-confirm:hover { background: #2c5282; }
+  .btn-confirm:disabled {
+    background: #94a3b8; cursor: not-allowed;
+  }
+
+  /* ── Progresso ────────────────────────────────────────── */
+  .progress-bar-bg {
+    background: #dde3ea; border-radius: 8px;
+    height: 8px; margin-bottom: 8px;
+  }
+  .progress-bar-fill {
+    background: #2563eb; height: 8px;
+    border-radius: 8px; transition: width 0.4s ease;
+  }
+  .progress-label { font-size: 12px; color: #666; margin-bottom: 20px; }
+
+  /* ── Card de questão ──────────────────────────────────── */
+  .question-card {
+    background: white; border-radius: 14px;
+    padding: 30px 32px; box-shadow: 0 2px 14px rgba(0,0,0,0.08);
+    margin-bottom: 16px;
+  }
+  .question-meta {
+    display: flex; gap: 10px; align-items: center;
+    margin-bottom: 12px;
+  }
+  .question-number {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; color: #2563eb;
+    letter-spacing: 1px;
+  }
+  .question-area {
+    font-size: 11px; font-weight: 600;
+    background: #f0fdf4; color: #16a34a;
+    border-radius: 12px; padding: 2px 10px;
+  }
+  .question-text {
+    font-family: Georgia, serif;
+    font-size: 15px; line-height: 1.75;
+    color: #1a1a1a; margin-bottom: 24px;
+  }
+
+  /* ── Opções ───────────────────────────────────────────── */
+  .options-list { display: flex; flex-direction: column; gap: 10px; }
+  .option-btn {
+    width: 100%; text-align: left; background: #f8fafc;
+    border: 2px solid #e2e8f0; border-radius: 10px;
+    padding: 13px 16px; font-size: 14px; line-height: 1.55;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .option-btn:hover:not(:disabled) { border-color: #93c5fd; background: #eff6ff; }
+  .option-btn:disabled { cursor: default; }
+  .option-letter {
+    font-weight: 700; color: #2563eb;
+    min-width: 22px; font-size: 13px;
+  }
+  .option-btn.correct  { border-color: #16a34a; background: #f0fdf4; }
+  .option-btn.wrong    { border-color: #dc2626; background: #fef2f2; }
+  .option-btn.correct .option-letter { color: #16a34a; }
+  .option-btn.wrong   .option-letter { color: #dc2626; }
+
+  /* ── Feedback ─────────────────────────────────────────── */
+  .feedback-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 20px;
+    font-size: 13px; font-weight: 600; margin: 18px 0 10px;
+  }
+  .feedback-badge.correct-badge { background: #dcfce7; color: #15803d; }
+  .feedback-badge.wrong-badge   { background: #fee2e2; color: #b91c1c; }
+
+  .explanation-box {
+    background: #fefce8; border-left: 4px solid #eab308;
+    border-radius: 0 8px 8px 0; padding: 14px 16px;
+    font-size: 13px; line-height: 1.7; margin-top: 14px;
+    color: #422006;
+  }
+  .explanation-box strong { display: block; margin-bottom: 4px; color: #713f12; }
+
+  .btn-next {
+    background: #2563eb; color: white;
+    border: none; border-radius: 8px;
+    padding: 12px 28px; font-size: 14px; font-weight: 600;
+    cursor: pointer; margin-top: 18px; transition: background 0.2s;
+  }
+  .btn-next:hover { background: #1d4ed8; }
+
+  /* ── Dissertativa ─────────────────────────────────────── */
+  #dissertationScreen .section-header {
+    background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+    color: white; padding: 20px 28px; border-radius: 14px 14px 0 0;
+    margin-bottom: 0;
+  }
+  #dissertationScreen .section-header h2 { font-size: 18px; margin-bottom: 4px; }
+  #dissertationScreen .section-header p  { font-size: 13px; opacity: 0.85; }
+
+  .case-card {
+    background: white; border-radius: 0 0 0 0;
+    padding: 26px 30px; border-left: 4px solid #7c3aed;
+    background: #faf5ff;
+  }
+  .case-card h3 {
+    font-size: 13px; font-weight: 700;
+    text-transform: uppercase; color: #7c3aed;
+    letter-spacing: 0.8px; margin-bottom: 10px;
+  }
+  .case-text {
+    font-family: Georgia, serif;
+    font-size: 14.5px; line-height: 1.8; color: #1a1a1a;
+  }
+
+  .diss-questions {
+    background: white; border-radius: 0 0 14px 14px;
+    padding: 28px 30px; box-shadow: 0 2px 14px rgba(0,0,0,0.08);
+  }
+  .diss-question-block { margin-bottom: 26px; }
+  .diss-question-label {
+    font-size: 14px; font-weight: 700; color: #1e3a5f;
+    margin-bottom: 6px; display: flex; gap: 8px;
+  }
+  .diss-letter {
+    background: #1e3a5f; color: white;
+    border-radius: 50%; width: 24px; height: 24px;
+    display: inline-flex; align-items: center;
+    justify-content: center; font-size: 12px; font-weight: 700;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .diss-question-text {
+    font-family: Georgia, serif;
+    font-size: 14px; line-height: 1.65; color: #334155;
+    margin-bottom: 10px;
+  }
+  .diss-textarea {
+    width: 100%; min-height: 120px;
+    border: 2px solid #e2e8f0; border-radius: 8px;
+    padding: 12px; font-size: 13.5px; line-height: 1.6;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #1a1a1a; resize: vertical;
+    transition: border-color 0.2s;
+  }
+  .diss-textarea:focus { outline: none; border-color: #7c3aed; }
+  .diss-textarea.filled { border-color: #16a34a; background: #f0fdf4; }
+
+  .diss-hint { font-size: 12px; color: #94a3b8; margin-top: 5px; }
+
+  /* ── Comparação pós-confirmação ──────────────────────── */
+  .comparison-block {
+    margin-bottom: 30px; border-radius: 10px;
+    overflow: hidden; border: 1px solid #e2e8f0;
+  }
+  .comparison-question {
+    background: #1e3a5f; color: white;
+    padding: 12px 18px; font-size: 14px; font-weight: 600;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .comparison-question .diss-letter-sm {
+    background: white; color: #1e3a5f;
+    border-radius: 50%; width: 22px; height: 22px;
+    display: inline-flex; align-items: center;
+    justify-content: center; font-size: 11px; font-weight: 800;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .comparison-panels { display: grid; grid-template-columns: 1fr 1fr; }
+  .comparison-panel { padding: 18px 20px; }
+  .comparison-panel.user-panel { background: #f8fafc; border-right: 1px solid #e2e8f0; }
+  .comparison-panel.expected-panel { background: #f0fdf4; }
+  .panel-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.8px; margin-bottom: 8px;
+  }
+  .user-panel .panel-label  { color: #64748b; }
+  .expected-panel .panel-label { color: #15803d; }
+  .panel-content {
+    font-size: 13px; line-height: 1.7; color: #1a1a1a;
+    white-space: pre-wrap; font-family: Georgia, serif;
+  }
+  .panel-content table {
+    border-collapse: collapse; width: 100%; font-size: 12px; margin-top: 8px;
+  }
+  .panel-content th {
+    background: #1e3a5f; color: white; padding: 6px 8px; text-align: left;
+  }
+  .panel-content td {
+    border: 1px solid #cbd5e1; padding: 5px 8px; vertical-align: top;
+  }
+  .panel-content tr:nth-child(even) td { background: #f1f5f9; }
+  .empty-answer { color: #94a3b8; font-style: italic; }
+
+  @media (max-width: 600px) {
+    .comparison-panels { grid-template-columns: 1fr; }
+    .comparison-panel.user-panel { border-right: none; border-bottom: 1px solid #e2e8f0; }
+  }
+
+  /* ── Resultado ────────────────────────────────────────── */
+  #resultsScreen {
+    background: white; border-radius: 14px;
+    padding: 44px 40px; text-align: center;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  }
+  .score-circle {
+    width: 130px; height: 130px;
+    border-radius: 50%; margin: 0 auto 24px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-size: 36px; font-weight: 800;
+    border: 6px solid #2563eb; color: #1e3a5f;
+  }
+  .score-circle span { font-size: 13px; font-weight: 500; color: #64748b; }
+  #resultsScreen h2 { font-size: 22px; color: #1e3a5f; margin-bottom: 12px; }
+  #resultsScreen p  { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 6px; }
+  .stat-row {
+    display: flex; justify-content: center; gap: 32px;
+    margin: 24px 0; flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-val { font-size: 28px; font-weight: 800; }
+  .stat-lbl { font-size: 12px; color: #64748b; margin-top: 2px; }
+  .stat.green .stat-val { color: #16a34a; }
+  .stat.red   .stat-val { color: #dc2626; }
+  .stat.blue  .stat-val { color: #2563eb; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Prova de Saldo — 2ª Chamada</h1>
+  <p>Clínica Médica · Internato · 10 questões objetivas + 1 dissertativa</p>
+</header>
+
+<div class="quiz-container">
+
+  <!-- ══ Start Screen ══════════════════════════════════════ -->
+  <div id="startScreen">
+    <h2>Pronto para a prova?</h2>
+    <p>Esta simulação replica as questões do saldo.<br>
+       Responda no seu ritmo — o gabarito comentado aparece após cada resposta.</p>
+    <div class="tag-row">
+      <span class="tag">Nefrologia</span>
+      <span class="tag">Infectologia</span>
+      <span class="tag">Gastroenterologia</span>
+      <span class="tag">Endocrinologia</span>
+      <span class="tag">Hematologia</span>
+      <span class="tag">Dissertativa — Meningite</span>
+    </div>
+    <p style="font-size:13px;color:#888;margin-bottom:28px;">
+      As alternativas são embaralhadas a cada sessão.
+    </p>
+    <button class="btn-primary" onclick="startQuiz()">Começar prova</button>
+  </div>
+
+  <!-- ══ Quiz Screen (MCQ) ════════════════════════════════ -->
+  <div id="quizScreen" style="display:none">
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+    </div>
+    <p class="progress-label" id="progressLabel">Questão 1 de 10</p>
+
+    <div class="question-card">
+      <div class="question-meta">
+        <div class="question-number" id="questionNumber">Q1</div>
+        <div class="question-area" id="questionArea">Nefrologia</div>
+      </div>
+      <div class="question-text" id="questionText"></div>
+      <div class="options-list" id="optionsList"></div>
+      <div id="feedbackArea" style="display:none">
+        <div class="feedback-badge" id="feedbackBadge"></div>
+        <div class="explanation-box" id="explanationBox">
+          <strong>Comentário</strong>
+          <span id="explanationText"></span>
+        </div>
+        <button class="btn-next" id="btnNext" onclick="nextQuestion()">Próxima questão →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ Dissertation Screen ══════════════════════════════ -->
+  <div id="dissertationScreen" style="display:none">
+    <div class="section-header">
+      <h2>Questão Dissertativa — Meningite</h2>
+      <p>Leia o caso, responda as três partes e confirme para ver o gabarito comentado.</p>
+    </div>
+
+    <div class="case-card">
+      <h3>Caso Clínico</h3>
+      <p class="case-text">Homem de 21 anos, universitário, residente em alojamento estudantil, é trazido ao pronto-socorro pelos colegas com história de cefaleia holocraniana intensa há 18 horas, febre alta (39,5 °C), vômitos em jato, fotofobia importante e sonolência progressiva nas últimas 4 horas. Ao exame: regular estado geral, prostrado; PA 100/60 mmHg; FC 124 bpm; Tax 39,2 °C; Glasgow 13 (abertura ocular ao chamado, resposta verbal confusa, obedece a comandos). Apresenta rigidez de nuca evidente, sinais de Kernig e Brudzinski positivos e lesões petequiais purpúricas disseminadas em tronco e membros inferiores, algumas com aspecto necrótico central. Sem foco infeccioso óbvio em vias aéreas, abdome ou pele íntegra. Hemograma: leucócitos 22.000/mm³ com 18% de bastonetes; plaquetas 98.000; PCR 280 mg/L; lactato sérico 4,8 mmol/L.</p>
+    </div>
+
+    <div class="diss-questions" id="dissQuestionsForm">
+
+      <div class="diss-question-block">
+        <div class="diss-question-label">
+          <span class="diss-letter">a</span>
+          <span>Diagnóstico e diferencial</span>
+        </div>
+        <p class="diss-question-text">Qual o diagnóstico mais provável e seu diagnóstico diferencial? Justifique com base nos dados clínicos.</p>
+        <textarea class="diss-textarea" id="answerA" placeholder="Digite sua resposta aqui…" oninput="checkTextareas()"></textarea>
+        <p class="diss-hint">Inclua o agente etiológico, justificativa clínica e os principais diferenciais.</p>
+      </div>
+
+      <div class="diss-question-block">
+        <div class="diss-question-label">
+          <span class="diss-letter">b</span>
+          <span>Achados no líquor</span>
+        </div>
+        <p class="diss-question-text">Quais os achados esperados no líquor (LCR) para confirmar o diagnóstico? Diferencie meningite bacteriana, viral e tuberculosa em uma tabela comparativa (aspecto, células, proteínas, glicose).</p>
+        <textarea class="diss-textarea" id="answerB" placeholder="Descreva os achados esperados e monte a tabela comparativa…" oninput="checkTextareas()"></textarea>
+        <p class="diss-hint">Inclua: aspecto, pressão, celularidade, proteínas, glicose e exames adicionais.</p>
+      </div>
+
+      <div class="diss-question-block">
+        <div class="diss-question-label">
+          <span class="diss-letter">c</span>
+          <span>Tratamento empírico</span>
+        </div>
+        <p class="diss-question-text">Qual o tratamento empírico imediato? Discuta o papel da dexametasona adjuvante e quando está indicada.</p>
+        <textarea class="diss-textarea" id="answerC" placeholder="Descreva o esquema antibiótico, doses e o papel da dexametasona…" oninput="checkTextareas()"></textarea>
+        <p class="diss-hint">Cite antibiótico, dose, via, indicação de ampicilina e evidências da dexametasona.</p>
+      </div>
+
+      <button class="btn-confirm" id="btnConfirm" onclick="revealDissertation()" disabled>
+        Confirmar e ver gabarito comentado
+      </button>
+    </div>
+
+    <!-- Comparison View (hidden until confirmed) -->
+    <div id="dissComparison" style="display:none; margin-top: 24px;"></div>
+
+    <div id="btnToDissResults" style="display:none; text-align:center; margin-top:24px;">
+      <button class="btn-primary" onclick="showResults()">Ver resultado final →</button>
+    </div>
+  </div>
+
+  <!-- ══ Results Screen ═══════════════════════════════════ -->
+  <div id="resultsScreen" style="display:none">
+    <div class="score-circle" id="scoreCircle">
+      <div id="scoreNum">0</div>
+      <span>acertos</span>
+    </div>
+    <h2 id="resultsTitle">Resultado</h2>
+    <div class="stat-row">
+      <div class="stat green"><div class="stat-val" id="statCorrect">0</div><div class="stat-lbl">Corretas</div></div>
+      <div class="stat red">  <div class="stat-val" id="statWrong">0</div>  <div class="stat-lbl">Erradas</div></div>
+      <div class="stat blue"> <div class="stat-val" id="statPct">0%</div>  <div class="stat-lbl">Aproveitamento</div></div>
+    </div>
+    <p id="resultsMsg"></p>
+    <br>
+    <button class="btn-secondary" onclick="restartQuiz()">Refazer a prova</button>
+  </div>
+
+</div><!-- /quiz-container -->
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   BANCO DE QUESTÕES
+═══════════════════════════════════════════════════════════ */
+const rawQuestions = [
+  {
+    id: "Q1", area: "Nefrologia",
+    stem: `Mulher de 62 anos, portadora de DM2 há 18 anos, comparece à consulta de rotina. Refere boa adesão ao tratamento com metformina e insulina NPH. PA: 142/88 mmHg. Exames: HbA1c 7,9%; creatinina 1,3 mg/dL (TFG estimada 52 mL/min/1,73m²); relação albumina/creatinina urinária (RAC) de 180 mg/g em duas amostras, com intervalo de 4 meses. Fundoscopia mostra retinopatia diabética não proliferativa. Sem outras comorbidades relevantes. Qual é a conduta mais adequada?`,
+    options: [
+      "Iniciar losartana e dapagliflozina, otimizar controle glicêmico e pressórico, e manter seguimento.",
+      "Iniciar anlodipino isolado para controle pressórico, mantendo apenas a metformina como hipoglicemiante.",
+      "Solicitar biópsia renal antes de qualquer modificação terapêutica, dada a presença de albuminúria.",
+      "Suspender a metformina pelo risco de acidose lática e iniciar apenas insulinoterapia plena.",
+      "Iniciar furosemida em dose baixa para reduzir a albuminúria e proteger o rim a longo prazo."
+    ],
+    correctIndex: 0,
+    explanation: `A paciente tem nefropatia diabética estabelecida (DM2 de longa data + retinopatia + albuminúria moderada com TFG reduzida — DRC estágio G3a A2). O tratamento combina iECA/BRA (losartana reduz a pressão intraglomerular independentemente da PA) com iSGLT-2 (dapagliflozina demonstrou redução de eventos renais e cardiovasculares). B erra ao não bloquear o SRAA, padrão-ouro em nefroproteção. C é desnecessária — o quadro clínico é típico e não há indicação de biópsia. D está incorreta: metformina pode ser mantida com TFG > 30 mL/min. E é equivocada: furosemida não protege o rim e pode causar hipovolemia.`
+  },
+  {
+    id: "Q2", area: "Nefrologia",
+    stem: `Homem de 34 anos procura emergência por edema progressivo em membros inferiores e periorbitário há 3 semanas, associado a urina espumosa. Nega febre, hematúria macroscópica ou dor lombar. PA: 138/86 mmHg. Exames: proteinúria de 24h 6,8 g; albumina sérica 2,4 g/dL; colesterol total 312 mg/dL; creatinina 1,0 mg/dL; sedimento urinário sem hematúria ou cilindros; sorologias para HIV, HBV e HCV negativas; FAN negativo; anti-PLA2R positivo. Qual é o diagnóstico mais provável?`,
+    options: [
+      "Doença por lesão mínima — iniciar prednisona 1 mg/kg/dia.",
+      "Glomerulosclerose segmentar e focal — iniciar ciclosporina e prednisona.",
+      "Nefropatia membranosa primária — considerar imunossupressão com rituximabe.",
+      "Glomerulonefrite pós-estreptocócica — manter conduta expectante e restrição de sódio.",
+      "Nefropatia por IgA — iniciar iECA e biópsia renal de urgência."
+    ],
+    correctIndex: 2,
+    explanation: `O anti-PLA2R positivo é altamente específico para nefropatia membranosa primária — causa mais comum de síndrome nefrótica em adultos brancos. Nos casos de alto risco (proteinúria persistente > 4 g/dia), o rituximabe é opção de primeira linha. A (DLM) é típica da infância e cursa com anti-PLA2R negativo. B (GESF) não tem marcador sorológico nesse perfil. D é descartada: ausência de hematúria, contexto pós-infeccioso e elementos nefríticos. E (nefropatia por IgA) cursa com hematúria macroscópica recorrente e síndrome nefrítica, não nefrótica pura.`
+  },
+  {
+    id: "Q3", area: "Infectologia",
+    stem: `Mulher de 72 anos, internada há 12 dias por pneumonia comunitária tratada com ceftriaxona e claritromicina, evolui no 10º dia com diarreia aquosa (8 evacuações/dia), febre 38,3 °C e cólica abdominal. Exames: leucócitos 18.500/mm³; creatinina 1,8 mg/dL (basal 1,0 mg/dL); albumina 2,8 g/dL. Pesquisa de toxinas A/B de C. difficile nas fezes positiva, com GDH positivo. Qual é a conduta correta?`,
+    options: [
+      "Manter os antibióticos atuais e associar loperamida para reduzir o número de evacuações.",
+      "Iniciar metronidazol oral 500 mg 8/8h por 10 dias como primeira linha.",
+      "Iniciar vancomicina oral 125 mg 6/6h por 10 dias e suspender o antibiótico desencadeante quando possível.",
+      "Solicitar colonoscopia com biópsia antes de qualquer tratamento específico.",
+      "Iniciar ciprofloxacino oral associado a probiótico de alta potência."
+    ],
+    correctIndex: 2,
+    explanation: `A paciente tem ICD grave (leucocitose > 15.000 + creatinina ≥ 1,5× basal). O tratamento atual de 1ª linha é vancomicina oral 125 mg 6/6h × 10 dias (ou fidaxomicina), com descontinuação do antibiótico desencadeante. A é incorreta e perigosa: loperamida está contraindicado pelo risco de megacólon tóxico. B reflete recomendação obsoleta — metronidazol tem eficácia inferior. D é desnecessária: diagnóstico já confirmado pela toxina + GDH. E é grave erro: ciprofloxacino é um dos antibióticos que mais induzem ICD.`
+  },
+  {
+    id: "Q4", area: "Gastroenterologia",
+    stem: `Mulher de 28 anos refere diarreia crônica há 8 meses, com 4–5 evacuações pastosas/dia, distensão abdominal, perda ponderal de 6 kg e episódios de aftas orais. Exame físico: IMC 19,2 kg/m²; palidez cutâneo-mucosa. Exames: Hb 9,8 g/dL (VCM 76 fL); ferritina 8 ng/mL; albumina 3,2 g/dL; anti-transglutaminase IgA fortemente positivo; IgA total normal. Endoscopia digestiva alta com biópsia de duodeno: atrofia vilositária subtotal e linfocitose intraepitelial. Qual é o diagnóstico e conduta?`,
+    options: [
+      "Doença de Crohn ileal — iniciar mesalazina e corticoide.",
+      "Síndrome do intestino irritável com predomínio diarreico — orientar dieta FODMAP.",
+      "Doença celíaca — instituir dieta sem glúten estrita e seguimento.",
+      "Giardíase crônica — tratar com metronidazol por 7 dias.",
+      "Supercrescimento bacteriano (SIBO) — iniciar rifaximina."
+    ],
+    correctIndex: 2,
+    explanation: `O quadro reúne os elementos clássicos da doença celíaca: diarreia com má absorção (perda ponderal, anemia ferropriva, hipoalbuminemia), aftas orais, anti-tTG IgA positivo com IgA total normal e biópsia com atrofia vilositária + linfocitose intraepitelial (Marsh III). O tratamento é dieta sem glúten estrita e vitalícia. A (Crohn) não tem essa sorologia nem histologia. B (SII) não cursa com perda ponderal, anemia ou alteração histológica. D (Giardíase) pode dar má absorção, mas não atrofia vilositária extensa nem essa sorologia. E (SIBO) é diagnosticado por teste respiratório, não tem esse perfil sorológico.`
+  },
+  {
+    id: "Q5", area: "Gastroenterologia",
+    stem: `Homem de 67 anos comparece à emergência com febre 39 °C, calafrios, icterícia progressiva e dor intensa em hipocôndrio direito há 24 horas. PA: 92/58 mmHg; FC: 118 bpm; Glasgow 13. Exames: leucócitos 19.000/mm³; bilirrubina total 8,2 mg/dL (direta 6,8); fosfatase alcalina 480 U/L; GGT 720 U/L; creatinina 1,9 mg/dL (basal 0,9). USG abdominal: dilatação de vias biliares intra e extra-hepáticas com cálculo no colédoco distal. Qual é a conduta correta?`,
+    options: [
+      "Antibioticoterapia oral ambulatorial e colecistectomia eletiva em 4–6 semanas.",
+      "Apenas hidratação venosa e observação clínica, reservando antibiótico se houver piora.",
+      "Antibioticoterapia IV de amplo espectro e colecistectomia laparoscópica imediata.",
+      "Antibioticoterapia IV de amplo espectro e CPRE de urgência para descompressão biliar.",
+      "Antibioticoterapia oral e colangiorressonância nas próximas 48–72 horas."
+    ],
+    correctIndex: 3,
+    explanation: `O paciente tem colangite aguda grave com pêntade de Reynolds (tríade de Charcot + hipotensão + alteração de consciência) e disfunção renal. A coledocolitíase é a causa em ~85% dos casos. A conduta combina antibioticoterapia IV imediata (piperacilina-tazobactam ou cef 3ª geração + metronidazol) com CPRE de urgência para descompressão biliar — procedimento de escolha. A, B e E erram pela gravidade: paciente em sepse com disfunção orgânica não tolera conduta ambulatorial ou expectante. C é incorreta: colecistectomia não desobstrui o colédoco e não é o procedimento de descompressão; ela é programada eletivamente após resolução do quadro agudo.`
+  },
+  {
+    id: "Q6", area: "Nefrologia",
+    stem: `Homem de 58 anos é internado por pneumonia grave e choque séptico, requerendo noradrenalina e amicacina por 5 dias. No 6º dia, mesmo com PA estabilizada, evolui com oligúria (diurese 280 mL/24h) e creatinina de 3,4 mg/dL (admissão: 0,9 mg/dL). Exames urinários: FeNa 3,8%; osmolalidade urinária 290 mOsm/kg; sedimento com cilindros granulosos pigmentados; relação ureia/creatinina sérica 28; sem dilatação de vias urinárias na USG. Qual é o diagnóstico e conduta?`,
+    options: [
+      "IRA pré-renal por hipovolemia persistente — expandir com 30 mL/kg de cristaloide.",
+      "Necrose tubular aguda multifatorial (isquêmica + nefrotóxica por aminoglicosídeo) — suspender a amicacina e otimizar suporte.",
+      "Glomerulonefrite rapidamente progressiva — iniciar pulsoterapia com metilprednisolona empírica.",
+      "Nefrite intersticial aguda por droga — suspender todas as medicações e iniciar corticoide.",
+      "IRA pós-renal por obstrução — passar cateter vesical e solicitar tomografia de abdome."
+    ],
+    correctIndex: 1,
+    explanation: `O padrão é NTA mista — isquêmica (choque séptico prolongado) e nefrotóxica (amicacina acumula no túbulo proximal). Achados confirmatórios: FeNa > 2%, osmolalidade urinária ~290 mOsm/kg (perda da capacidade de concentração), ureia/creatinina < 40 (perda de reabsorção tubular preferencial de ureia) e cilindros granulosos pigmentados ("muddy brown casts"). Conduta: suspender o agente nefrotóxico + otimizar perfusão. A está errada: FeNa < 1% e osmolalidade alta seriam esperados no pré-renal. C requer hematúria e cilindros hemáticos. D requer tríade (febre + rash + eosinofilia) ou eosinofilúria, ausentes. E é descartada pela USG sem hidronefrose.`
+  },
+  {
+    id: "Q7", area: "Endocrinologia",
+    stem: `Mulher de 42 anos queixa-se de ganho de 14 kg em 8 meses (predominantemente em tronco), face arredondada e avermelhada, estrias violáceas largas no abdome e raízes de coxa, fraqueza para subir escadas, equimoses fáceis e amenorreia. PA: 158/96 mmHg; glicemia de jejum 138 mg/dL. Investigação: cortisol salivar noturno elevado em duas amostras; cortisol após 1 mg de dexametasona 8,6 mcg/dL (não suprimiu). ACTH plasmático: 92 pg/mL (elevado). Supressão com 8 mg de dexametasona: suprime cortisol > 50%. RM de sela: microadenoma hipofisário de 6 mm. Qual é o diagnóstico e conduta?`,
+    options: [
+      "Carcinoma adrenal funcionante — adrenalectomia unilateral.",
+      "Síndrome do ACTH ectópico (provável carcinoide pulmonar) — investigar tumor primário.",
+      "Doença de Cushing (adenoma hipofisário produtor de ACTH) — cirurgia transesfenoidal.",
+      "Síndrome de Cushing iatrogênica — suspender corticoide exógeno.",
+      "Pseudo-Cushing por depressão maior — iniciar antidepressivo e reavaliar em 6 meses."
+    ],
+    correctIndex: 2,
+    explanation: `A clínica é clássica de síndrome de Cushing endógena confirmada (cortisol salivar noturno + teste de 1 mg). ACTH elevado indica causa dependente de ACTH. A supressão com dexametasona em alta dose (8 mg) + microadenoma na RM selar confirmam doença de Cushing (adenoma hipofisário corticotrofo) — causa mais comum (~70%). O tratamento de escolha é cirurgia transesfenoidal. A (carcinoma adrenal) cursa com ACTH suprimido. B (ACTH ectópico): tumores ectópicos tipicamente não suprimem com 8 mg de dexametasona. D é afastada pelo hipercortisolismo endógeno comprovado. E é improvável com toda a confirmação bioquímica e achado tumoral.`
+  },
+  {
+    id: "Q8", area: "Endocrinologia",
+    stem: `Homem de 47 anos relata aumento progressivo de mãos, pés e mandíbula nos últimos 5 anos (calçado: 41→44), prognatismo, sudorese excessiva, cefaleia frontal, parestesias em mãos e diagnóstico recente de DM2 e HAS. Exame: traços faciais grosseiros, macroglossia, espaçamento entre os dentes, sinal de Tinel positivo bilateralmente. IGF-1: 820 ng/mL (ref. ajustada por idade: até 250); GH basal 18 ng/mL, sem supressão após TOTG (GH mínimo 8 ng/mL). Qual é o diagnóstico e conduta?`,
+    options: [
+      "Hipotireoidismo primário grave — solicitar TSH e iniciar levotiroxina.",
+      "Acromegalia por adenoma hipofisário somatotrófico — solicitar RM de sela e programar cirurgia transesfenoidal.",
+      "Síndrome de Cushing — solicitar cortisol salivar noturno e teste de supressão com dexametasona.",
+      "Prolactinoma com efeito de massa — iniciar cabergolina semanal.",
+      "Diabetes insipidus central — solicitar teste de restrição hídrica e iniciar desmopressina."
+    ],
+    correctIndex: 1,
+    explanation: `O quadro é clássico de acromegalia: crescimento acral (mãos, pés, mandíbula), prognatismo, macroglossia, sudorese excessiva, síndrome do túnel do carpo (Tinel bilateral), DM e HAS como comorbidades. A confirmação bioquímica combina IGF-1 elevado + falha de supressão do GH após TOTG (indivíduos saudáveis suprimem GH < 1 ng/mL). Próximo passo: RM de sela → cirurgia transesfenoidal ± análogo de somatostatina (octreotida/lanreotida). A (hipotireoidismo) não causa crescimento acral. C não tem elementos cushinoides. D (prolactinoma) cursa com hipogonadismo/galactorreia, não com crescimento acral. E está completamente fora do contexto.`
+  },
+  {
+    id: "Q10", area: "Hematologia",
+    stem: `Mulher de 38 anos, com menorragia há 2 anos, refere fadiga progressiva, dispneia aos esforços e queda de cabelo. Exame: palidez cutâneo-mucosa 2+/4+, taquicardia leve. Hemograma: Hb 8,4 g/dL; VCM 72 fL; HCM 24 pg; RDW 17%. Cinética do ferro: ferritina 6 ng/mL; ferro sérico 28 mcg/dL; saturação de transferrina 8%; TIBC elevada. Reticulócitos diminuídos. Qual é o diagnóstico e conduta?`,
+    options: [
+      "Anemia ferropriva — iniciar sulfato ferroso oral e investigar a causa do sangramento.",
+      "Talassemia menor — solicitar eletroforese de hemoglobina e orientar aconselhamento genético.",
+      "Anemia de doença crônica — pesquisar foco infeccioso ou inflamatório oculto.",
+      "Anemia sideroblástica — solicitar mielograma para confirmar sideroblastos em anel.",
+      "Anemia megaloblástica por deficiência de B12 — iniciar reposição parenteral."
+    ],
+    correctIndex: 0,
+    explanation: `Perfil característico de anemia ferropriva: microcítica (VCM 72), hipocrômica, RDW elevado (anisocitose — ao contrário da talassemia, onde RDW costuma ser normal), ferritina < 15 ng/mL (praticamente diagnóstica de ferropenia), ferro baixo, saturação baixa e TIBC elevada. A causa aqui é a menorragia crônica. Conduta: reposição com sulfato ferroso VO + investigação ginecológica. B (talassemia) tem ferritina normal/alta e eletroforese alterada. C (doença crônica) tem ferritina normal/alta e TIBC tipicamente baixa. D (sideroblástica) é rara, tipicamente em homens mais velhos. E (B12) cursa com macrocitose (VCM > 100), não microcitose.`
+  },
+  {
+    id: "Q11", area: "Hematologia",
+    stem: `Homem de 68 anos, com gastrectomia total há 12 anos por adenocarcinoma gástrico (em remissão), comparece com fadiga, parestesias em pés, marcha instável e dificuldade de concentração. Neurológico: redução da sensibilidade vibratória e proprioceptiva em MMII, sinal de Romberg positivo. Hemograma: Hb 9,6 g/dL; VCM 116 fL; leucócitos 4.200 (hipersegmentação de neutrófilos no esfregaço); plaquetas 138.000. LDH elevado, bilirrubina indireta levemente aumentada. Qual é o diagnóstico e conduta?`,
+    options: [
+      "Anemia hemolítica autoimune — solicitar Coombs direto e iniciar corticoide.",
+      "Síndrome mielodisplásica — solicitar mielograma e cariótipo.",
+      "Anemia megaloblástica por deficiência de vitamina B12 — repor cianocobalamina parenteral.",
+      "Anemia por deficiência de folato — iniciar ácido fólico oral em dose alta.",
+      "Hipotireoidismo descompensado — solicitar TSH e iniciar levotiroxina."
+    ],
+    correctIndex: 2,
+    explanation: `Gastrectomia total → perda de fator intrínseco → deficiência de B12 (absorção ileal impossível). O quadro une achados hematológicos (macrocitose, hipersegmentação neutrofílica, pancitopenia leve, hemólise intramedular — LDH + BI elevadas) e neurológicos (degeneração combinada subaguda: cordões posteriores → perda de propriocepção e vibração, Romberg +, parestesias, alteração cognitiva). Tratamento: cianocobalamina parenteral (IM) — via oral ineficaz sem fator intrínseco. A (hemolítica autoimune): hemólise megaloblástica é intramedular, Coombs negativo. B (SMD): só após exclusão de causas reversíveis como deficiência de B12. D (folato): sem manifestações neurológicas; repor folato isolado em deficiência de B12 mascara e agrava o dano neurológico. E não explica os achados megaloblásticos nem neurológicos focais.`
+  }
+];
+
+/* ═══════════════════════════════════════════════════════════
+   DISSERTATIVA — GABARITO
+═══════════════════════════════════════════════════════════ */
+const dissGabarito = {
+  a: `O diagnóstico mais provável é meningococcemia com meningite meningocócica (doença meningocócica invasiva), causada por Neisseria meningitidis.
+
+Justificativa clínica:
+• Epidemiologia: adulto jovem em alojamento estudantil — fator de risco documentado para surtos de meningococo.
+• Síndrome meníngea completa: cefaleia holocraniana, febre alta, vômitos em jato, fotofobia, rebaixamento do nível de consciência (Glasgow 13), rigidez de nuca + Kernig + Brudzinski positivos.
+• Lesões petequiais/purpúricas com aspecto necrótico central: extremamente sugestivas de meningococcemia — refletem vasculite e CIVD por endotoxina da Neisseria.
+• Resposta inflamatória sistêmica grave: leucocitose com 18% de bastões, plaquetopenia (consumo), PCR 280 mg/L, lactato 4,8 mmol/L → sepse grave com risco de choque + síndrome de Waterhouse-Friderichsen.
+
+Diagnósticos diferenciais:
+• Meningite pneumocócica (S. pneumoniae): mais comum no adulto geral; associada a foco respiratório; rash petequial menos frequente.
+• Meningite viral (enterovírus): quadro mais brando, sem rebaixamento marcado nem púrpura; LCR linfomonocitário.
+• Meningoencefalite herpética (HSV-1): alteração comportamental, crises convulsivas, sem púrpura.
+• Hemorragia subaracnóidea: cefaleia "em trovoada", sem febre, leucocitose ou rash.
+• Sepse com púrpura fulminante de outra etiologia (pneumococo, estafilococo).`,
+
+  b: `LCR esperado na meningite bacteriana (meningocócica):
+Aspecto turvo/purulento, pressão elevada, > 1.000 células/mm³ com predomínio de neutrófilos, proteína muito elevada (> 100 mg/dL), glicose muito baixa (< 40 mg/dL ou < 0,4× glicemia sérica). Gram/cultura positivos em 60–80%. Hemoculturas antes do antibiótico aumentam o rendimento.`,
+
+  b_table: `<table>
+<tr><th>Parâmetro</th><th>Bacteriana</th><th>Viral</th><th>Tuberculosa</th></tr>
+<tr><td><strong>Aspecto</strong></td><td>Turvo / purulento</td><td>Límpido (cristalino)</td><td>Límpido ou xantocrômico</td></tr>
+<tr><td><strong>Pressão</strong></td><td>Elevada</td><td>Normal / levemente ↑</td><td>Elevada</td></tr>
+<tr><td><strong>Células</strong></td><td>&gt; 1.000/mm³</td><td>10–500/mm³</td><td>100–500/mm³</td></tr>
+<tr><td><strong>Predomínio</strong></td><td>Neutrófilos (PMN)</td><td>Linfomononuclear</td><td>Linfomononuclear</td></tr>
+<tr><td><strong>Proteína</strong></td><td>&gt; 100 mg/dL</td><td>&lt; 100 mg/dL</td><td>&gt; 100 (frequentemente &gt; 200)</td></tr>
+<tr><td><strong>Glicose</strong></td><td>Baixa (&lt; 40 ou &lt; 0,4× sérica)</td><td>Normal</td><td>Muito baixa</td></tr>
+<tr><td><strong>Adicionais</strong></td><td>Gram, cultura, PCR</td><td>PCR viral (enterovírus, HSV)</td><td>ADA ↑, BAAR, cultura/PCR BK</td></tr>
+</table>`,
+
+  c: `Tratamento empírico imediato — iniciar na 1ª hora, sem retardar pela coleta do LCR:
+
+Adulto imunocompetente (16–50 anos):
+→ Ceftriaxona 2 g IV 12/12h (cobre N. meningitidis, S. pneumoniae, H. influenzae)
+
+Maior de 50 anos / imunossuprimido / gestante:
+→ + Ampicilina 2 g IV 4/4h (cobertura de Listeria monocytogenes)
+
+Pós-neurocirurgia / TCE / fístula liquórica:
+→ Vancomicina + cefepima ou meropenem (S. aureus, gram-negativos hospitalares, Pseudomonas)
+
+Suporte: ressuscitação volêmica criteriosa, noradrenalina se necessário, UTI, correção de coagulopatia.
+
+Dexametasona adjuvante — 0,15 mg/kg IV 6/6h × 4 dias:
+→ Iniciar 15–20 min ANTES ou junto com a 1ª dose do antibiótico.
+→ Racional: atenuar a resposta inflamatória meníngea gerada pela lise bacteriana pelo antibiótico.
+
+Evidências:
+• Benefício comprovado em adultos com meningite pneumocócica: ↓ mortalidade e ↓ sequelas neurológicas (especialmente perda auditiva).
+• Benefício consagrado em crianças com H. influenzae tipo b.
+• Controverso na meningite meningocócica — diretrizes recomendam manter empiricamente até identificar o agente.
+• Não iniciar se já passaram horas desde a 1ª dose do antibiótico.
+
+Medidas adicionais:
+• Isolamento respiratório por gotículas nas primeiras 24h de antibiótico.
+• Notificação compulsória imediata à vigilância epidemiológica.
+• Quimioprofilaxia dos contatos próximos: rifampicina 600 mg VO 12/12h × 2 dias, ou ciprofloxacino 500 mg VO dose única, ou ceftriaxona 250 mg IM dose única (preferida em gestantes).`
+};
+
+/* ═══════════════════════════════════════════════════════════
+   ESTADO DO QUIZ
+═══════════════════════════════════════════════════════════ */
+let questions = [];
+let currentQ = 0;
+let score = 0;
+let answered = false;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function shuffleQuestion(q) {
+  const correct = q.options[q.correctIndex];
+  const shuffled = shuffle(q.options);
+  return { ...q, options: shuffled, correctIndex: shuffled.indexOf(correct) };
+}
+
+/* ── Iniciar ────────────────────────────────────────────── */
+function startQuiz() {
+  questions = rawQuestions.map(shuffleQuestion);
+  currentQ = 0; score = 0;
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('quizScreen').style.display = 'block';
+  renderQuestion();
+}
+
+/* ── Renderizar questão ─────────────────────────────────── */
+function renderQuestion() {
+  const q = questions[currentQ];
+  const total = questions.length;
+  answered = false;
+
+  const pct = Math.round((currentQ / total) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `Questão ${currentQ + 1} de ${total}`;
+  document.getElementById('questionNumber').textContent = q.id;
+  document.getElementById('questionArea').textContent = q.area;
+  document.getElementById('questionText').textContent = q.stem;
+
+  const labels = ['A', 'B', 'C', 'D', 'E'];
+  const list = document.getElementById('optionsList');
+  list.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.onclick = () => selectOption(i);
+    btn.innerHTML = `<span class="option-letter">${labels[i]})</span><span>${opt}</span>`;
+    list.appendChild(btn);
+  });
+
+  document.getElementById('feedbackArea').style.display = 'none';
+}
+
+/* ── Selecionar opção ───────────────────────────────────── */
+function selectOption(idx) {
+  if (answered) return;
+  answered = true;
+
+  const q = questions[currentQ];
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+
+  const correct = idx === q.correctIndex;
+  if (correct) score++;
+
+  btns[idx].classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) btns[q.correctIndex].classList.add('correct');
+
+  const badge = document.getElementById('feedbackBadge');
+  badge.className = 'feedback-badge ' + (correct ? 'correct-badge' : 'wrong-badge');
+  badge.innerHTML = correct
+    ? '✓ Resposta correta!'
+    : `✗ Incorreto — a correta era ${['A','B','C','D','E'][q.correctIndex]})`;
+
+  document.getElementById('explanationText').textContent = q.explanation;
+  document.getElementById('feedbackArea').style.display = 'block';
+
+  const isLast = currentQ === questions.length - 1;
+  document.getElementById('btnNext').textContent = isLast
+    ? 'Questão dissertativa →'
+    : 'Próxima questão →';
+}
+
+/* ── Próxima questão ────────────────────────────────────── */
+function nextQuestion() {
+  currentQ++;
+  if (currentQ < questions.length) {
+    renderQuestion();
+  } else {
+    document.getElementById('quizScreen').style.display = 'none';
+    document.getElementById('dissertationScreen').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DISSERTATIVA
+═══════════════════════════════════════════════════════════ */
+function checkTextareas() {
+  const a = document.getElementById('answerA').value.trim();
+  const b = document.getElementById('answerB').value.trim();
+  const c = document.getElementById('answerC').value.trim();
+  const btn = document.getElementById('btnConfirm');
+  btn.disabled = !(a && b && c);
+
+  ['answerA','answerB','answerC'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.toggle('filled', el.value.trim().length > 0);
+  });
+}
+
+function revealDissertation() {
+  const userA = document.getElementById('answerA').value.trim();
+  const userB = document.getElementById('answerB').value.trim();
+  const userC = document.getElementById('answerC').value.trim();
+
+  // Desabilitar textareas e botão
+  ['answerA','answerB','answerC'].forEach(id => {
+    document.getElementById(id).disabled = true;
+  });
+  document.getElementById('btnConfirm').style.display = 'none';
+
+  const questions_diss = [
+    { letter: 'a', label: 'Diagnóstico e diferencial', text: 'Qual o diagnóstico mais provável e seu diagnóstico diferencial? Justifique com base nos dados clínicos.', user: userA, gabarito: dissGabarito.a, table: null },
+    { letter: 'b', label: 'Achados no líquor', text: 'Quais os achados esperados no líquor (LCR) para confirmar o diagnóstico? Diferencie meningite bacteriana, viral e tuberculosa em uma tabela comparativa.', user: userB, gabarito: dissGabarito.b, table: dissGabarito.b_table },
+    { letter: 'c', label: 'Tratamento empírico', text: 'Qual o tratamento empírico imediato? Discuta o papel da dexametasona adjuvante e quando está indicada.', user: userC, gabarito: dissGabarito.c, table: null }
+  ];
+
+  let html = `<h3 style="font-size:16px;color:#1e3a5f;margin-bottom:18px;font-weight:700;">Gabarito comentado — comparação com sua resposta</h3>`;
+
+  questions_diss.forEach(q => {
+    const userDisplay = q.user
+      ? `<div class="panel-content">${escapeHtml(q.user)}</div>`
+      : `<div class="panel-content empty-answer">(sem resposta)</div>`;
+
+    const gabHTML = q.table
+      ? `<div class="panel-content">${escapeHtml(q.gabarito)}</div>${q.table}`
+      : `<div class="panel-content">${escapeHtml(q.gabarito)}</div>`;
+
+    html += `
+    <div class="comparison-block">
+      <div class="comparison-question">
+        <span class="diss-letter-sm">${q.letter}</span>
+        <span>${q.text}</span>
+      </div>
+      <div class="comparison-panels">
+        <div class="comparison-panel user-panel">
+          <div class="panel-label">Minha resposta</div>
+          ${userDisplay}
+        </div>
+        <div class="comparison-panel expected-panel">
+          <div class="panel-label">Resposta esperada</div>
+          ${gabHTML}
+        </div>
+      </div>
+    </div>`;
+  });
+
+  const comp = document.getElementById('dissComparison');
+  comp.innerHTML = html;
+  comp.style.display = 'block';
+  document.getElementById('btnToDissResults').style.display = 'block';
+  comp.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\n/g, '<br>');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESULTADO FINAL
+═══════════════════════════════════════════════════════════ */
+function showResults() {
+  document.getElementById('dissertationScreen').style.display = 'none';
+  document.getElementById('resultsScreen').style.display = 'block';
+  window.scrollTo(0, 0);
+
+  const total = questions.length;
+  const pct = Math.round((score / total) * 100);
+
+  document.getElementById('scoreNum').textContent = `${score}/${total}`;
+  document.getElementById('statCorrect').textContent = score;
+  document.getElementById('statWrong').textContent = total - score;
+  document.getElementById('statPct').textContent = pct + '%';
+
+  let title, msg;
+  if (pct >= 70) {
+    title = 'Bom desempenho!';
+    msg = 'Você atingiu um aproveitamento satisfatório nas questões objetivas. Revise os pontos que errou e não esqueça de comparar sua dissertativa com o gabarito comentado.';
+  } else {
+    title = 'Continue revisando!';
+    msg = 'O aproveitamento ficou abaixo de 70%. Revise os comentários de cada questão e consulte os materiais das áreas com mais erros antes da prova.';
+  }
+  document.getElementById('resultsTitle').textContent = title;
+  document.getElementById('resultsMsg').textContent = msg;
+
+  document.getElementById('scoreCircle').style.borderColor = pct >= 70 ? '#16a34a' : '#dc2626';
+  document.getElementById('scoreNum').style.color = pct >= 70 ? '#15803d' : '#b91c1c';
+}
+
+function restartQuiz() {
+  document.getElementById('resultsScreen').style.display = 'none';
+  document.getElementById('dissertationScreen').style.display = 'none';
+  document.getElementById('startScreen').style.display = 'block';
+  document.getElementById('dissQuestionsForm').style.display = 'block';
+  document.getElementById('dissComparison').style.display = 'none';
+  document.getElementById('dissComparison').innerHTML = '';
+  document.getElementById('btnToDissResults').style.display = 'none';
+  document.getElementById('btnConfirm').style.display = 'block';
+  document.getElementById('btnConfirm').disabled = true;
+  ['answerA','answerB','answerC'].forEach(id => {
+    const el = document.getElementById(id);
+    el.value = ''; el.disabled = false;
+    el.classList.remove('filled');
+  });
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
