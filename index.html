@@ -73,6 +73,21 @@
     background: #94a3b8; cursor: not-allowed;
   }
 
+  /* ── Seletor de prova ─────────────────────────────────── */
+  .prova-cards {
+    display: flex; gap: 18px; justify-content: center;
+    flex-wrap: wrap; margin: 24px 0 0;
+  }
+  .prova-card {
+    background: #f8fafc; border: 2px solid #e2e8f0;
+    border-radius: 12px; padding: 22px 20px;
+    min-width: 260px; flex: 1; text-align: center;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .prova-card:hover { border-color: #93c5fd; box-shadow: 0 4px 16px rgba(37,99,235,0.10); }
+  .prova-card h3 { font-size: 17px; color: #1e3a5f; margin-bottom: 8px; font-weight: 700; }
+  .prova-card .card-desc { font-size: 12px; color: #64748b; margin-bottom: 16px; line-height: 1.6; }
+
   /* ── Progresso ────────────────────────────────────────── */
   .progress-bar-bg {
     background: #dde3ea; border-radius: 8px;
@@ -302,20 +317,33 @@
   <!-- ══ Start Screen ══════════════════════════════════════ -->
   <div id="startScreen">
     <h2>Pronto para a prova?</h2>
-    <p>Esta simulação replica as questões do saldo.<br>
-       Responda no seu ritmo — o gabarito comentado aparece após cada resposta.</p>
-    <div class="tag-row">
-      <span class="tag">Nefrologia</span>
-      <span class="tag">Infectologia</span>
-      <span class="tag">Gastroenterologia</span>
-      <span class="tag">Endocrinologia</span>
-      <span class="tag">Hematologia</span>
-      <span class="tag">Dissertativa — Meningite</span>
+    <p>Escolha o simulado — o gabarito comentado aparece após cada resposta.<br>
+       As alternativas são embaralhadas a cada sessão.</p>
+    <div class="prova-cards">
+      <div class="prova-card">
+        <h3>Prova 1</h3>
+        <div class="tag-row">
+          <span class="tag">Nefrologia</span>
+          <span class="tag">Infectologia</span>
+          <span class="tag">Gastroenterologia</span>
+          <span class="tag">Endocrinologia</span>
+          <span class="tag">Hematologia</span>
+        </div>
+        <p class="card-desc">Nefropatia diabética · C. difficile · Leptospirose · Mononucleose · Cushing · Acromegalia · Anemia ferropriva · Deficiência de B12 · Dissertativa — Meningite meningocócica</p>
+        <button class="btn-primary" onclick="startQuiz(1)">Começar Prova 1</button>
+      </div>
+      <div class="prova-card">
+        <h3>Prova 2</h3>
+        <div class="tag-row">
+          <span class="tag">Nefrologia</span>
+          <span class="tag">Infectologia</span>
+          <span class="tag">Endocrinologia</span>
+          <span class="tag">Hematologia</span>
+        </div>
+        <p class="card-desc">NIA por AINE · GESF · Tuberculose · Leptospirose grave · Meningite criptocócica · HIV agudo · Macroprolactinoma · DI central · AHAI · Anemia da DRC · Dissertativa — Meningite pneumocócica otogênica</p>
+        <button class="btn-primary" onclick="startQuiz(2)">Começar Prova 2</button>
+      </div>
     </div>
-    <p style="font-size:13px;color:#888;margin-bottom:28px;">
-      As alternativas são embaralhadas a cada sessão.
-    </p>
-    <button class="btn-primary" onclick="startQuiz()">Começar prova</button>
   </div>
 
   <!-- ══ Quiz Screen (MCQ) ════════════════════════════════ -->
@@ -352,7 +380,7 @@
 
     <div class="case-card">
       <h3>Caso Clínico</h3>
-      <p class="case-text">Homem de 21 anos, universitário, residente em alojamento estudantil, é trazido ao pronto-socorro pelos colegas com história de cefaleia holocraniana intensa há 18 horas, febre alta (39,5 °C), vômitos em jato, fotofobia importante e sonolência progressiva nas últimas 4 horas. Ao exame: regular estado geral, prostrado; PA 100/60 mmHg; FC 124 bpm; Tax 39,2 °C; Glasgow 13 (abertura ocular ao chamado, resposta verbal confusa, obedece a comandos). Apresenta rigidez de nuca evidente, sinais de Kernig e Brudzinski positivos e lesões petequiais purpúricas disseminadas em tronco e membros inferiores, algumas com aspecto necrótico central. Sem foco infeccioso óbvio em vias aéreas, abdome ou pele íntegra. Hemograma: leucócitos 22.000/mm³ com 18% de bastonetes; plaquetas 98.000; PCR 280 mg/L; lactato sérico 4,8 mmol/L.</p>
+      <p class="case-text" id="dissCaseText">Homem de 21 anos, universitário, residente em alojamento estudantil, é trazido ao pronto-socorro pelos colegas com história de cefaleia holocraniana intensa há 18 horas, febre alta (39,5 °C), vômitos em jato, fotofobia importante e sonolência progressiva nas últimas 4 horas. Ao exame: regular estado geral, prostrado; PA 100/60 mmHg; FC 124 bpm; Tax 39,2 °C; Glasgow 13 (abertura ocular ao chamado, resposta verbal confusa, obedece a comandos). Apresenta rigidez de nuca evidente, sinais de Kernig e Brudzinski positivos e lesões petequiais purpúricas disseminadas em tronco e membros inferiores, algumas com aspecto necrótico central. Sem foco infeccioso óbvio em vias aéreas, abdome ou pele íntegra. Hemograma: leucócitos 22.000/mm³ com 18% de bastonetes; plaquetas 98.000; PCR 280 mg/L; lactato sérico 4,8 mmol/L.</p>
     </div>
 
     <div class="diss-questions" id="dissQuestionsForm">
@@ -360,31 +388,31 @@
       <div class="diss-question-block">
         <div class="diss-question-label">
           <span class="diss-letter">a</span>
-          <span>Diagnóstico e diferencial</span>
+          <span id="dissQLabel_a">Diagnóstico e diferencial</span>
         </div>
-        <p class="diss-question-text">Qual o diagnóstico mais provável e seu diagnóstico diferencial? Justifique com base nos dados clínicos.</p>
+        <p class="diss-question-text" id="dissQText_a">Qual o diagnóstico mais provável e seu diagnóstico diferencial? Justifique com base nos dados clínicos.</p>
         <textarea class="diss-textarea" id="answerA" placeholder="Digite sua resposta aqui…" oninput="checkTextareas()"></textarea>
-        <p class="diss-hint">Inclua o agente etiológico, justificativa clínica e os principais diferenciais.</p>
+        <p class="diss-hint" id="dissHint_a">Inclua o agente etiológico, justificativa clínica e os principais diferenciais.</p>
       </div>
 
       <div class="diss-question-block">
         <div class="diss-question-label">
           <span class="diss-letter">b</span>
-          <span>Achados no líquor</span>
+          <span id="dissQLabel_b">Achados no líquor</span>
         </div>
-        <p class="diss-question-text">Quais os achados esperados no líquor (LCR) para confirmar o diagnóstico? Diferencie meningite bacteriana, viral e tuberculosa em uma tabela comparativa (aspecto, células, proteínas, glicose).</p>
+        <p class="diss-question-text" id="dissQText_b">Quais os achados esperados no líquor (LCR) para confirmar o diagnóstico? Diferencie meningite bacteriana, viral e tuberculosa em uma tabela comparativa (aspecto, células, proteínas, glicose).</p>
         <textarea class="diss-textarea" id="answerB" placeholder="Descreva os achados esperados e monte a tabela comparativa…" oninput="checkTextareas()"></textarea>
-        <p class="diss-hint">Inclua: aspecto, pressão, celularidade, proteínas, glicose e exames adicionais.</p>
+        <p class="diss-hint" id="dissHint_b">Inclua: aspecto, pressão, celularidade, proteínas, glicose e exames adicionais.</p>
       </div>
 
       <div class="diss-question-block">
         <div class="diss-question-label">
           <span class="diss-letter">c</span>
-          <span>Tratamento empírico</span>
+          <span id="dissQLabel_c">Tratamento empírico</span>
         </div>
-        <p class="diss-question-text">Qual o tratamento empírico imediato? Discuta o papel da dexametasona adjuvante e quando está indicada.</p>
+        <p class="diss-question-text" id="dissQText_c">Qual o tratamento empírico imediato? Discuta o papel da dexametasona adjuvante e quando está indicada.</p>
         <textarea class="diss-textarea" id="answerC" placeholder="Descreva o esquema antibiótico, doses e o papel da dexametasona…" oninput="checkTextareas()"></textarea>
-        <p class="diss-hint">Cite antibiótico, dose, via, indicação de ampicilina e evidências da dexametasona.</p>
+        <p class="diss-hint" id="dissHint_c">Cite antibiótico, dose, via, indicação de ampicilina e evidências da dexametasona.</p>
       </div>
 
       <button class="btn-confirm" id="btnConfirm" onclick="revealDissertation()" disabled>
@@ -421,7 +449,7 @@
 
 <script>
 /* ═══════════════════════════════════════════════════════════
-   BANCO DE QUESTÕES
+   BANCO DE QUESTÕES — PROVA 1
 ═══════════════════════════════════════════════════════════ */
 const rawQuestions = [
   {
@@ -619,12 +647,227 @@ Medidas adicionais:
 };
 
 /* ═══════════════════════════════════════════════════════════
+   BANCO DE QUESTÕES — PROVA 2
+═══════════════════════════════════════════════════════════ */
+const rawQuestions2 = [
+  {
+    id: "Q1", area: "Nefrologia",
+    stem: `Mulher de 58 anos, hipertensa e com osteoartrite de joelhos, vinha em uso diário de ibuprofeno 600 mg 8/8h há 3 semanas, prescrito por ortopedista. Procura emergência por febre baixa (37,9 °C), exantema maculopapular em tronco há 5 dias e queda do volume urinário. Exames: creatinina 3,1 mg/dL (basal 0,8 mg/dL); ureia 96 mg/dL; eosinofilia periférica (8%); EAS com leucocitúria estéril, hematúria microscópica, proteinúria de 0,8 g/24h e cilindros leucocitários; eosinofilúria positiva (Hansel); USG sem hidronefrose. Qual é o diagnóstico e a conduta?`,
+    options: [
+      "Nefrite intersticial aguda por AINE — suspender o ibuprofeno e considerar corticoterapia.",
+      "Glomerulonefrite rapidamente progressiva — solicitar ANCA e biópsia renal de urgência.",
+      "Necrose tubular aguda por hipoperfusão — expandir volume com cristaloide isotônico.",
+      "Pielonefrite aguda complicada — iniciar ceftriaxona empírica e coletar urocultura.",
+      "Nefropatia por IgA — solicitar biópsia renal eletiva e iniciar iECA."
+    ],
+    correctIndex: 0,
+    explanation: `A tríade clássica de NIA por droga: febre + rash + eosinofilia, somada a IRA com leucocitúria estéril, cilindros leucocitários e eosinofilúria. O AINE é causa frequente. Conduta: suspender o agente; corticoterapia (prednisona 1 mg/kg/dia) se não houver melhora rápida. GNRP cursa com hematúria dismórfica e cilindros hemáticos, não eosinofilúria. NTA não tem esse perfil inflamatório-alérgico. Pielonefrite: leucocitúria estéril afasta infecção. Nefropatia por IgA: hematúria macroscópica recorrente pós-IVAS, sem eosinofilúria.`
+  },
+  {
+    id: "Q2", area: "Nefrologia",
+    stem: `Homem de 32 anos, negro, hipertenso há 4 anos em uso irregular de losartana, procura ambulatório por edema de MMII progressivo e urina espumosa há 2 meses. PA: 152/96 mmHg. Exames: proteinúria 24h 5,9 g; albumina 2,6 g/dL; colesterol total 286 mg/dL; creatinina 1,4 mg/dL; sedimento com hematúria microscópica leve; sorologias HIV/HBV/HCV negativas; FAN negativo; complemento normal; anti-PLA2R negativo. Biópsia: esclerose segmentar em < 50% dos glomérulos com colapso de tufo capilar em alguns segmentos. Qual é o diagnóstico e conduta?`,
+    options: [
+      "Glomerulosclerose segmentar e focal (GESF) primária — iECA/BRA em dose otimizada e prednisona em alta dose.",
+      "Doença por lesão mínima — iniciar prednisona 1 mg/kg/dia em monoterapia.",
+      "Nefropatia membranosa primária — iniciar rituximabe.",
+      "Nefropatia por IgA — iniciar apenas iECA e seguimento ambulatorial.",
+      "Glomerulonefrite membranoproliferativa — investigar crioglobulinas e iniciar imunossupressão."
+    ],
+    correctIndex: 0,
+    explanation: `Síndrome nefrótica com perfil epidemiológico clássico de GESF (adulto jovem, afrodescendente, HAS precoce — polimorfismos APOL1) e biópsia mostrando esclerose segmentar. Tratamento: bloqueio do SRAA otimizado + prednisona 1 mg/kg/dia por 8–16 semanas. DLM tem biópsia normal à microscopia óptica e é mais comum em crianças. Membranosa: anti-PLA2R negativo e biópsia incompatível. Nefropatia por IgA: síndrome nefrítica com hematúria macroscópica recorrente. GNMP: complemento consumido e padrão histológico distinto.`
+  },
+  {
+    id: "Q3", area: "Infectologia",
+    stem: `Homem de 41 anos, morador de albergue municipal há 6 meses, tabagista, procura UBS com tosse produtiva há 8 semanas, sudorese noturna, febre vespertina, perda de 7 kg e dois episódios de hemoptise. Exame: caquético, estertores em ápice direito. RX tórax: cavitação de paredes espessas em ápice direito com infiltrado adjacente. Baciloscopia de escarro BAAR positiva ++/4+ em duas amostras. Convive em quarto coletivo com mais 8 pessoas. Sorologia HIV negativa. Qual é a conduta correta?`,
+    options: [
+      "Iniciar esquema RIPE (2 meses) + RH (4 meses), notificar compulsoriamente e investigar todos os contatos próximos.",
+      "Iniciar levofloxacino empírico por 14 dias e reavaliar com nova baciloscopia, postergando o RIPE até o teste de sensibilidade.",
+      "Iniciar isoniazida em monoterapia por 6 meses como tratamento de infecção latente dado o contexto de aglomeração.",
+      "Aguardar resultado da cultura e TRM-TB antes de qualquer intervenção, mantendo acompanhamento ambulatorial sem isolamento.",
+      "Iniciar RIPE por 6 meses e dispensar notificação, pois tuberculose pulmonar não é doença de notificação compulsória no Brasil."
+    ],
+    correctIndex: 0,
+    explanation: `Tuberculose pulmonar bacilífera (clínica clássica + cavitação apical + BAAR positivo em duas amostras). Esquema básico: RIPE 2RHZE/4RH. Três pontos obrigatórios: (1) notificação compulsória imediata ao SINAN; (2) investigação de contatos com exame clínico, PPD/IGRA e RX de tórax; (3) isolamento respiratório até negativação da baciloscopia ou ≥15 dias de tratamento eficaz. Levofloxacino isolado seleciona resistência. Isoniazida em monoterapia cura apenas ILTB — em doença ativa gera resistência. BAAR+ já confirma o diagnóstico; não se aguarda cultura. A TB é doença de notificação compulsória.`
+  },
+  {
+    id: "Q4", area: "Infectologia",
+    stem: `Homem de 45 anos, agricultor, em município com enchente há 12 dias e investigação de surto pela vigilância. Início abrupto há 8 dias: febre alta, mialgia intensa em panturrilhas, cefaleia. No 4º dia recebeu sintomáticos. Hoje (8º dia): icterícia rubínica intensa, oligúria (320 mL/24h), epistaxe e dispneia. Exame: ictérico 4+/4+, taquipneico (FR 28), sufusão conjuntival, estertores crepitantes bilaterais, PA 96/60 mmHg. Exames: bilirrubina total 18 mg/dL (BD 14); creatinina 4,2 mg/dL; K 6,1 mEq/L; plaquetas 62.000; CPK 4.100 U/L; INR 1,4. RX tórax: infiltrado alveolar bilateral em "asa de borboleta". Qual é a conduta?`,
+    options: [
+      "Iniciar penicilina cristalina 1,5 milhões UI IV 6/6h (ou ceftriaxona 1 g IV/dia), suporte intensivo e notificar compulsoriamente à vigilância epidemiológica.",
+      "Manter sintomáticos e hidratação oral, aguardando resultado da microaglutinação (MAT) antes de qualquer terapia específica.",
+      "Iniciar doxiciclina 100 mg VO 12/12h em monoterapia ambulatorial e reavaliar em 48 horas, dispensando notificação por caso isolado.",
+      "Iniciar oseltamivir empírico, pois o quadro é mais compatível com pneumonia viral grave (influenza) do que com leptospirose.",
+      "Suspender qualquer antibiótico e priorizar plasmaférese, já que a leptospirose grave é primariamente um fenômeno autoimune."
+    ],
+    correctIndex: 0,
+    explanation: `Leptospirose grave — Síndrome de Weil com SPHG (mortalidade > 50%). Tratamento: penicilina cristalina IV ou ceftriaxona IV por 7 dias + suporte intensivo (UTI, terapia renal substitutiva pela IRA oligúrica com hipercalemia, ventilação protetora). Leptospirose é notificação compulsória imediata, ainda mais em surto pós-enchente. Postergar o tratamento em SPHG aumenta drasticamente a mortalidade. Doxiciclina oral é apenas para formas leves. Sufusão conjuntival + icterícia rubínica + IRA + contexto de enchente é diagnóstica. Leptospirose é infecciosa — não se trata com plasmaférese.`
+  },
+  {
+    id: "Q5", area: "Infectologia",
+    stem: `Mulher de 34 anos com HIV há 8 anos e abandono do TARV há 2 anos. Cefaleia progressiva há 4 semanas, febre baixa intermitente, alteração comportamental nos últimos 7 dias e dois episódios de vômitos. Exame: confusa, Glasgow 13, rigidez de nuca discreta, sem déficit focal. CD4: 42 células/mm³; CV 380.000 cópias. TC sem lesões expansivas. Punção lombar: pressão 38 cmH₂O; líquor límpido; 180 células com 88% linfomononucleares; proteína 240 mg/dL; glicose LCR 22 mg/dL (glicemia 102 mg/dL); ADA 14 U/L; tinta da China positiva; antígeno criptocócico no LCR positivo (1:1024). Qual é a conduta?`,
+    options: [
+      "Meningite criptocócica em aids — iniciar anfotericina B (preferencialmente lipossomal) + flucitosina e programar punções de alívio seriadas para controle da hipertensão liquórica.",
+      "Meningite bacteriana parcialmente tratada — iniciar ceftriaxona em alta dose e dexametasona adjuvante.",
+      "Meningite tuberculosa isolada — iniciar esquema RIPE com prednisona adjuvante; o ADA elevado é diagnóstico definitivo.",
+      "Meningite viral por HSV — iniciar aciclovir IV empírico e suspender qualquer outra terapia até PCR-HSV.",
+      "Hidrocefalia comunicante idiopática — encaminhar para derivação ventricular sem terapia antimicrobiana."
+    ],
+    correctIndex: 0,
+    explanation: `Meningite criptocócica em HIV avançado (CD4 < 50). Padrão liquórico típico: límpido, linfomononuclear, hiperproteinorraquia, hipoglicorraquia, pressão muito elevada, tinta da China e antígeno positivos. Tratamento: (1) indução — anfotericina B lipossomal + flucitosina 2 semanas; (2) consolidação — fluconazol 400–800 mg/dia por 8 semanas; (3) manutenção. Hipertensão intracraniana é principal causa de morte precoce → punções lombares de alívio diárias. TARV deve ser postergada 4–6 semanas para evitar SIRI. Bacteriana parcialmente tratada não justifica tinta da China e antígeno criptocócico positivos. TB: ADA > 10 sugere mas a positividade direta para Cryptococcus define o diagnóstico. HSV: sinais focais temporais e PCR-HSV+.`
+  },
+  {
+    id: "Q6", area: "Infectologia",
+    stem: `Homem de 22 anos, universitário sexualmente ativo, com febre 38,5 °C há 12 dias, odinofagia, fadiga, mialgia, exantema maculopapular difuso (incluindo palmas e plantas) e duas úlceras orais rasas e dolorosas. Exame: linfadenopatia generalizada (cervical, axilar e inguinal), hepatoesplenomegalia leve. Exames: linfocitose moderada, raros linfócitos atípicos; TGO 78; TGP 92; teste heterófilo (Monospot) negativo; sorologia EBV: VCA IgM negativo, VCA IgG positivo, anti-EBNA positivo (infecção antiga); CMV IgM e IgG negativos. Relação sexual desprotegida 4 semanas antes. Qual é a hipótese diagnóstica mais provável e a investigação correta?`,
+    options: [
+      "Síndrome retroviral aguda (HIV agudo) — solicitar carga viral HIV (RNA-PCR) e ELISA de 4ª geração; sorologia EBV indica infecção antiga e Monospot negativo afasta mononucleose ativa.",
+      "Mononucleose infecciosa por EBV em fase aguda — iniciar corticoide para encurtar o curso da doença.",
+      "Faringotonsilite estreptocócica do grupo A — iniciar penicilina benzatina dose única e dispensar exames adicionais.",
+      "Sífilis secundária — solicitar VDRL e iniciar penicilina benzatina 2,4 milhões UI dose única.",
+      "Toxoplasmose adquirida em imunocompetente — solicitar anti-Toxoplasma IgM/IgG e manter conduta expectante."
+    ],
+    correctIndex: 0,
+    explanation: `Síndrome mononucleose-like com elementos que afastam EBV: Monospot negativo, VCA IgM negativo, anti-EBNA positivo (infecção antiga). HIV agudo é identificado por: exposição sexual desprotegida recente (3–6 semanas), linfadenopatia generalizada, úlceras mucocutâneas, exantema incluindo palmas e plantas. Investigação: RNA-HIV (positivo desde a 1ª–2ª semana) + ELISA de 4ª geração (Ag p24 + anticorpos). EBV: sorologia descarta mononucleose ativa. Corticoide na mono só em complicações específicas. Faringotonsilite estreptocócica não causa hepatomegalia, exantema palmoplantar ou linfadenopatia generalizada. Sífilis é diferencial relevante e deve ser investigada em paralelo.`
+  },
+  {
+    id: "Q7", area: "Endocrinologia",
+    stem: `Mulher de 27 anos com galactorreia bilateral espontânea há 6 meses, amenorreia secundária há 8 meses (β-hCG negativo), cefaleia frontal progressiva e "embaçamento visual lateral" há 2 semanas. Sem uso de antipsicóticos, antieméticos ou antidepressivos. Campimetria por confrontação: hemianopsia bitemporal. Exames: prolactina 380 ng/mL (ref. < 25); TSH normal; β-hCG negativo. RM de sela: lesão expansiva selar de 14 mm com extensão suprasselar comprimindo o quiasma óptico. Qual é o diagnóstico e conduta?`,
+    options: [
+      "Macroprolactinoma com efeito de massa — iniciar agonista dopaminérgico (cabergolina) como primeira linha, reservando cirurgia transesfenoidal para falha terapêutica ou piora visual aguda.",
+      "Adenoma hipofisário não-funcionante — proceder à cirurgia transesfenoidal imediata, sem terapia clínica prévia.",
+      "Hiperprolactinemia por macroprolactina (artefato laboratorial) — repetir dosagem após precipitação com PEG e dispensar imagem.",
+      "Síndrome de Sheehan — iniciar reposição hormonal múltipla e seguimento clínico.",
+      "Hipotireoidismo primário grave — iniciar levotiroxina esperando normalização da prolactina."
+    ],
+    correctIndex: 0,
+    explanation: `Macroprolactinoma (adenoma > 10 mm) com tríade feminina clássica: galactorreia + amenorreia + alterações visuais por compressão do quiasma. Prolactina > 250 ng/mL favorece prolactinoma. Tratamento de escolha mesmo com efeito de massa: agonista dopaminérgico (cabergolina 0,25–0,5 mg 1–2×/semana) — reduz o tumor em > 80% e melhora sintomas visuais. Cirurgia fica para falha, intolerância ou apoplexia. Prolactina de 380 ng/mL é incompatível com adenoma não-funcionante (que daria ≤ 100 por efeito de haste). Sheehan: necrose hipofisária pós-parto → hipopituitarismo, não hiperprolactinemia. TSH normal afasta hipotireoidismo.`
+  },
+  {
+    id: "Q8", area: "Endocrinologia",
+    stem: `Homem de 38 anos submetido a cirurgia transesfenoidal para craniofaringioma há 36 horas. No pós-operatório: poliúria de 7,5 L em 24h, sede intensa e despertar noturno para beber água. Exames: sódio 152 mEq/L; osmolalidade plasmática 312 mOsm/kg; osmolalidade urinária 110 mOsm/kg; densidade urinária 1.003; glicemia 96 mg/dL; potássio e cálcio normais. Após administração de desmopressina SC, a osmolalidade urinária sobe para 480 mOsm/kg em 1 hora. Qual é o diagnóstico e conduta?`,
+    options: [
+      "Diabetes insipidus central — repor água livre e iniciar desmopressina com monitorização rigorosa do sódio.",
+      "Diabetes insipidus nefrogênico — restringir sódio dietético e iniciar tiazídico.",
+      "Polidipsia psicogênica — restringir oferta hídrica e suporte psiquiátrico.",
+      "Diurese osmótica por hiperglicemia — iniciar insulinoterapia e hidratação venosa.",
+      "Síndrome de SIADH — restringir água livre e considerar tolvaptano."
+    ],
+    correctIndex: 0,
+    explanation: `Diabetes insipidus central pós-cirurgia hipofisária (incidência transitória de 20–30%). Critérios: poliúria hipotônica > 3 L/dia + plasma hipertônico (osmolalidade > 295, sódio elevado) + resposta à desmopressina com aumento da osmolalidade urinária > 50% — confirma defeito central e exclui nefrogênico (que não responderia). Tratamento: reposição lenta de água livre (correção do sódio < 10 mEq/L em 24h) + desmopressina com monitorização seriada. DI nefrogênico: sem resposta à desmopressina. Polidipsia primária: sódio e osmolalidade plasmática normais ou baixos. Glicemia normal afasta diurese osmótica. SIADH: hiponatremia + urina concentrada, o oposto do que há aqui.`
+  },
+  {
+    id: "Q11", area: "Hematologia",
+    stem: `Mulher de 45 anos com fadiga intensa há 3 semanas, dispneia aos esforços, icterícia leve e urina escura ("cor de chá"). Exame: palidez 3+/4+, icterícia 2+/4+, esplenomegalia a 2 cm do RCE. Exames: Hb 6,8 g/dL; VCM 102 fL; reticulócitos 9% (corrigido); bilirrubina indireta 4,8 mg/dL (direta normal); LDH 980 U/L; haptoglobina indetectável; esfregaço com microesferócitos e raros eritroblastos; Coombs direto positivo (IgG +++); função renal e hepática normais. Sorologias HIV/HBV/HCV e FAN negativos. Qual é o diagnóstico e a conduta?`,
+    options: [
+      "Anemia hemolítica autoimune por anticorpos quentes (IgG) — iniciar prednisona 1 mg/kg/dia e considerar profilaxia de tromboembolismo.",
+      "Anemia ferropriva avançada — iniciar sulfato ferroso e investigar sangramento oculto.",
+      "Anemia megaloblástica por deficiência de B12 — repor cianocobalamina parenteral.",
+      "Esferocitose hereditária — solicitar curva de fragilidade osmótica e encaminhar para esplenectomia.",
+      "Anemia aplásica — solicitar mielograma e biópsia de medula para confirmar hipocelularidade."
+    ],
+    correctIndex: 0,
+    explanation: `Hemólise franca: reticulocitose, LDH alto, BI elevada, haptoglobina indetectável, urina escura. Coombs direto IgG+++ define AHAI por anticorpos quentes (~70% dos casos). Microesferócitos = remoção parcial da membrana pelos macrófagos esplênicos. Tratamento de 1ª linha: prednisona 1 mg/kg/dia (resposta em 70–80%); rituximabe, esplenectomia e imunossupressores como 2ª linha. Profilaxia de TEV é importante (estado pró-trombótico). Ferropriva: VCM elevado e reticulocitose alta excluem. B12: Coombs negativo na hemólise megaloblástica intramedular. Esferocitose hereditária: Coombs negativo (defeito intrínseco da membrana). Aplásica: pancitopenia + reticulócitos baixos.`
+  },
+  {
+    id: "Q12", area: "Hematologia",
+    stem: `Homem de 71 anos com DRC estágio 4 (TFG 22 mL/min/1,73m²) por nefroangioesclerose. Fadiga progressiva e dispneia aos médios esforços nas últimas 8 semanas. Nega sangramentos. Exame: palidez, sem icterícia, sem visceromegalias. Exames: Hb 8,9 g/dL; VCM 88 fL; HCM 28 pg; RDW 13%; reticulócitos baixos; ferritina 320 ng/mL; saturação de transferrina 24%; TIBC normal; PCR 12 mg/L; B12 e folato normais; TSH normal; sangue oculto fecal negativo em três amostras; endoscopia recente sem alterações. Qual é o diagnóstico e a conduta?`,
+    options: [
+      "Anemia da DRC com componente de doença crônica — otimizar reposição de ferro (alvo: saturação > 30%, ferritina 100–500) e iniciar agente estimulador da eritropoiese (eritropoetina ou darbepoetina) com alvo de Hb 10–11 g/dL.",
+      "Anemia ferropriva — iniciar ferro oral em alta dose e investigar nova fonte de sangramento.",
+      "Anemia megaloblástica — repor B12 e folato empiricamente.",
+      "Anemia hemolítica subclínica — solicitar Coombs direto e LDH.",
+      "Síndrome mielodisplásica — encaminhar para mielograma e cariótipo."
+    ],
+    correctIndex: 0,
+    explanation: `Anemia normocítica normocrômica na DRC avançada: (1) deficiência relativa de eritropoetina e (2) doença crônica — hepcidina elevada bloqueia absorção e mobilização do ferro (ferritina elevada + saturação intermediária). Conduta: otimizar ferro (preferencialmente IV na DRC; alvo saturação > 30%, ferritina 100–500) + iniciar AEE (eritropoetina alfa, darbepoetina) quando Hb < 10 g/dL persistente, com alvo de Hb 10–11 g/dL (alvos > 11,5–12 aumentam risco cardiovascular). Ferropriva: ferritina de 320 e endoscopia negativa não confirmam ferropenia absoluta. B12 e folato normais afastam megaloblástica. Sem sinais de hemólise (reticulócitos baixos). SMD: macrocitose, displasia, citopenias múltiplas — contexto aqui está explicado pela DRC.`
+  }
+];
+
+/* ═══════════════════════════════════════════════════════════
+   CASO E GABARITO DISSERTATIVOS — PROVA 2
+═══════════════════════════════════════════════════════════ */
+const dissCase2 = `Senhor de 73 anos, portador de DM2 e hipertensão, é trazido pela esposa ao pronto-socorro com história de otalgia direita há 8 dias com otorreia purulenta há 4 dias, sendo medicado pelo clínico com amoxicilina via oral. Há 24 horas, evoluiu com piora progressiva de cefaleia holocraniana, febre de 39,3 °C com calafrios, vômitos em jato e, nas últimas 6 horas, rebaixamento do nível de consciência e fala arrastada. A esposa nega convulsões. Ao exame: sonolento, Glasgow 11 (abertura ocular ao chamado, resposta verbal confusa-inapropriada, localiza dor); PA 138/82 mmHg; FC 112 bpm; Tax 39,1 °C; SatO₂ 95% em ar ambiente; rigidez de nuca importante, Kernig e Brudzinski positivos; otoscopia com perfuração timpânica direita e secreção purulenta no conduto; ausculta pulmonar limpa; sem rash cutâneo ou petéquias. Hemograma: leucócitos 21.500/mm³ com 22% de bastonetes; PCR 312 mg/L; lactato sérico 3,1 mmol/L; glicemia 184 mg/dL; função renal e hepática preservadas.`;
+
+const dissGabarito2 = {
+  a: `Diagnóstico mais provável: meningite bacteriana aguda por Streptococcus pneumoniae (pneumococo), secundária a otite média aguda complicada com extensão intracraniana.
+
+Justificativa clínico-epidemiológica:
+• Idoso (> 65 anos) + diabético = fatores predisponentes clássicos para pneumococo e Listeria.
+• Foco parameníngeo evidente: OMA com perfuração timpânica e otorreia há 4 dias — porta de entrada otogênica, clássica do pneumococo em adultos > 50 anos.
+• Síndrome meníngea completa: cefaleia, febre, vômitos, rigidez de nuca + Kernig + Brudzinski + Glasgow 11 (sinal de gravidade).
+• Resposta inflamatória intensa: leucocitose com desvio à esquerda, PCR 312, lactato 3,1 (sepse).
+• Ausência de rash petequial/purpúrico: argumento adicional contra meningococcemia.
+• Amoxicilina oral prévia: meningite bacteriana parcialmente tratada — pode alterar LCR.
+
+Diagnósticos diferenciais:
+1. Listeria monocytogenes — importante em > 50 anos e diabéticos (cobertura empírica obrigatória).
+2. Haemophilus influenzae — raro em adulto vacinado, possível em foco otológico/sinusal.
+3. Abscesso cerebral / empiema subdural / mastoidite com extensão intracraniana.
+4. Meningite meningocócica — menos provável: sem rash, sem perfil epidemiológico típico.
+5. Meningoencefalite herpética — alteração comportamental + crises focais temporais.
+6. Hemorragia subaracnóidea — cefaleia "em trovoada", sem febre nem leucocitose.`,
+
+  b: `Antes da punção lombar: TC de crânio prévia (indicada pelo Glasgow rebaixado), mas sem atrasar ATB — colher hemoculturas e iniciar ATB + dexametasona antes da TC se não houver sinais de herniação.
+
+LCR esperado (bacteriana clássica): turvo/purulento, pressão muito elevada, > 1.000 células/mm³ com franco predomínio de PMN, proteína > 100 mg/dL, glicose < 40 mg/dL (relação LCR/sérica < 0,4), lactato elevado, Gram e cultura positivos em 60–80%.`,
+
+  b_table: `<table>
+<tr><th>Parâmetro</th><th>Bacteriana</th><th>Viral</th><th>Tuberculosa</th><th>Parcialmente tratada</th></tr>
+<tr><td><strong>Aspecto</strong></td><td>Turvo / purulento</td><td>Límpido</td><td>Límpido / xantocrômico</td><td>Turvo ou levemente turvo</td></tr>
+<tr><td><strong>Pressão</strong></td><td>Muito elevada</td><td>Normal / ↑ leve</td><td>Elevada</td><td>Elevada</td></tr>
+<tr><td><strong>Células/mm³</strong></td><td>&gt; 1.000</td><td>10–500</td><td>100–500</td><td>Variável (pode reduzir)</td></tr>
+<tr><td><strong>Predomínio</strong></td><td>PMN (neutrófilos)</td><td>Linfomononuclear</td><td>Linfomononuclear</td><td>Pode virar misto/linfocitário</td></tr>
+<tr><td><strong>Proteína</strong></td><td>&gt; 100 mg/dL</td><td>&lt; 100 mg/dL</td><td>&gt; 100 (freq. &gt; 200)</td><td>Elevada (pode ser menor)</td></tr>
+<tr><td><strong>Glicose</strong></td><td>Baixa (&lt; 40 ou &lt; 0,4× sérica)</td><td>Normal</td><td>Muito baixa</td><td>Pode normalizar parcialmente</td></tr>
+<tr><td><strong>Microbiologia</strong></td><td>Gram + cultura + PCR</td><td>PCR viral</td><td>ADA ↑, BAAR, PCR-BK</td><td>Gram/cultura freq. negativos; PCR + lactato mantêm valor</td></tr>
+</table>
+<p style="font-size:12px;margin-top:8px;color:#555;">ATB prévio (amoxicilina oral) pode negativar Gram e cultura, reduzir celularidade, mudar predomínio para linfomononuclear e elevar parcialmente a glicose. Métodos independentes de bactéria viável: PCR multiplex bacteriano, antígenos bacterianos (látex), lactato liquórico (mantém-se elevado) e procalcitonina.</p>`,
+
+  c: `Tratamento empírico — iniciar na 1ª hora, após hemoculturas e TC (sem postergar pelo LCR):
+
+Esquema para este paciente (idoso > 50 anos + diabético + foco parameníngeo):
+→ Ceftriaxona 2 g IV 12/12h (pneumococo, meningococo, H. influenzae)
+→ Vancomicina 15–20 mg/kg IV 8–12h (pneumococo resistente à cefalosporina de 3ª geração)
+→ Ampicilina 2 g IV 4/4h — obrigatória neste paciente pela idade > 50 anos + DM (risco de Listeria monocytogenes). A cefalosporina NÃO cobre adequadamente Listeria — erro clássico de prova.
+
+Dexametasona adjuvante:
+• Dose: 0,15 mg/kg IV 6/6h por 4 dias.
+• Iniciar 15–20 minutos ANTES ou junto com a 1ª dose do antibiótico (após o ATB, o benefício é perdido).
+• Indicação neste paciente: FORTEMENTE recomendada — contexto de meningite por pneumococo (foco otogênico + idoso) é o cenário com maior benefício comprovado: ↓ mortalidade e ↓ sequelas neurológicas (especialmente perda auditiva).
+• Conduta após identificar o agente: manter se confirmado pneumococo; suspender se meningococo ou Listeria.
+
+Medidas adicionais:
+• Avaliação ORL urgente + TC de ouvido/mastoide (investigar mastoidite e empiema subdural).
+• Controle glicêmico, monitorização neurológica e UTI.
+• Notificação compulsória imediata (≤ 24h ao SINAN).
+• Isolamento respiratório por gotículas nas primeiras 24h; suspender após confirmar pneumococo.
+• Quimioprofilaxia de contatos: NÃO indicada para pneumococo nem Listeria — apenas para meningococo (rifampicina, ciprofloxacino ou ceftriaxona).`
+};
+
+/* ═══════════════════════════════════════════════════════════
+   CONTEÚDO DINÂMICO DA DISSERTATIVA
+═══════════════════════════════════════════════════════════ */
+const dissCase1 = `Homem de 21 anos, universitário, residente em alojamento estudantil, é trazido ao pronto-socorro pelos colegas com história de cefaleia holocraniana intensa há 18 horas, febre alta (39,5 °C), vômitos em jato, fotofobia importante e sonolência progressiva nas últimas 4 horas. Ao exame: regular estado geral, prostrado; PA 100/60 mmHg; FC 124 bpm; Tax 39,2 °C; Glasgow 13 (abertura ocular ao chamado, resposta verbal confusa, obedece a comandos). Apresenta rigidez de nuca evidente, sinais de Kernig e Brudzinski positivos e lesões petequiais purpúricas disseminadas em tronco e membros inferiores, algumas com aspecto necrótico central. Sem foco infeccioso óbvio em vias aéreas, abdome ou pele íntegra. Hemograma: leucócitos 22.000/mm³ com 18% de bastonetes; plaquetas 98.000; PCR 280 mg/L; lactato sérico 4,8 mmol/L.`;
+
+const dissQuestions1 = [
+  { letter: 'a', label: 'Diagnóstico e diferencial', text: 'Qual o diagnóstico mais provável e seu diagnóstico diferencial? Justifique com base nos dados clínicos.', hint: 'Inclua o agente etiológico, justificativa clínica e os principais diferenciais.' },
+  { letter: 'b', label: 'Achados no líquor', text: 'Quais os achados esperados no líquor (LCR) para confirmar o diagnóstico? Diferencie meningite bacteriana, viral e tuberculosa em uma tabela comparativa (aspecto, células, proteínas, glicose).', hint: 'Inclua: aspecto, pressão, celularidade, proteínas, glicose e exames adicionais.' },
+  { letter: 'c', label: 'Tratamento empírico', text: 'Qual o tratamento empírico imediato? Discuta o papel da dexametasona adjuvante e quando está indicada.', hint: 'Cite antibiótico, dose, via, indicação de ampicilina e evidências da dexametasona.' }
+];
+
+const dissQuestions2 = [
+  { letter: 'a', label: 'Diagnóstico e diferencial', text: 'Qual o diagnóstico mais provável e seu diagnóstico diferencial? Justifique com base nos dados clínicos e epidemiológicos.', hint: 'Inclua o agente etiológico, justificativa clínico-epidemiológica (idoso, DM, foco parameníngeo, ATB prévio) e os principais diferenciais.' },
+  { letter: 'b', label: 'Achados no líquor', text: 'Quais os achados esperados no líquor (LCR) para confirmar o diagnóstico? Diferencie meningite bacteriana, viral e tuberculosa em uma tabela comparativa. Comente também o cenário de meningite bacteriana parcialmente tratada (este paciente recebeu amoxicilina previamente).', hint: 'Inclua: aspecto, pressão, celularidade, proteínas, glicose, exames adicionais. Discuta o impacto do ATB prévio no LCR e nos exames microbiológicos.' },
+  { letter: 'c', label: 'Tratamento empírico + Listeria', text: 'Qual o tratamento empírico imediato neste paciente específico? Discuta o papel da dexametasona adjuvante e justifique a necessidade (ou não) de cobertura para Listeria monocytogenes.', hint: 'Cite antibiótico, dose, via; justifique Ampicilina para Listeria neste perfil; dexametasona: dose, momento e indicação.' }
+];
+
+/* ═══════════════════════════════════════════════════════════
    ESTADO DO QUIZ
 ═══════════════════════════════════════════════════════════ */
 let questions = [];
 let currentQ = 0;
 let score = 0;
 let answered = false;
+let currentProva = 1;
 
 function shuffle(arr) {
   const a = [...arr];
@@ -642,8 +885,10 @@ function shuffleQuestion(q) {
 }
 
 /* ── Iniciar ────────────────────────────────────────────── */
-function startQuiz() {
-  questions = rawQuestions.map(shuffleQuestion);
+function startQuiz(provaNum) {
+  currentProva = provaNum || 1;
+  const raw = currentProva === 2 ? rawQuestions2 : rawQuestions;
+  questions = raw.map(shuffleQuestion);
   currentQ = 0; score = 0;
   document.getElementById('startScreen').style.display = 'none';
   document.getElementById('quizScreen').style.display = 'block';
@@ -713,10 +958,34 @@ function nextQuestion() {
   if (currentQ < questions.length) {
     renderQuestion();
   } else {
+    setupDissertationScreen();
     document.getElementById('quizScreen').style.display = 'none';
     document.getElementById('dissertationScreen').style.display = 'block';
     window.scrollTo(0, 0);
   }
+}
+
+/* ── Configurar dissertativa conforme a prova ───────────── */
+function setupDissertationScreen() {
+  const dissQs = currentProva === 2 ? dissQuestions2 : dissQuestions1;
+  const caseText = currentProva === 2 ? dissCase2 : dissCase1;
+  document.getElementById('dissCaseText').textContent = caseText;
+  dissQs.forEach(q => {
+    document.getElementById('dissQLabel_' + q.letter).textContent = q.label;
+    document.getElementById('dissQText_' + q.letter).textContent = q.text;
+    document.getElementById('dissHint_' + q.letter).textContent = q.hint;
+  });
+  // reset form
+  ['answerA','answerB','answerC'].forEach(id => {
+    const el = document.getElementById(id);
+    el.value = ''; el.disabled = false; el.classList.remove('filled');
+  });
+  document.getElementById('btnConfirm').style.display = 'block';
+  document.getElementById('btnConfirm').disabled = true;
+  document.getElementById('dissComparison').style.display = 'none';
+  document.getElementById('dissComparison').innerHTML = '';
+  document.getElementById('btnToDissResults').style.display = 'none';
+  document.getElementById('dissQuestionsForm').style.display = 'block';
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -746,11 +1015,16 @@ function revealDissertation() {
   });
   document.getElementById('btnConfirm').style.display = 'none';
 
-  const questions_diss = [
-    { letter: 'a', label: 'Diagnóstico e diferencial', text: 'Qual o diagnóstico mais provável e seu diagnóstico diferencial? Justifique com base nos dados clínicos.', user: userA, gabarito: dissGabarito.a, table: null },
-    { letter: 'b', label: 'Achados no líquor', text: 'Quais os achados esperados no líquor (LCR) para confirmar o diagnóstico? Diferencie meningite bacteriana, viral e tuberculosa em uma tabela comparativa.', user: userB, gabarito: dissGabarito.b, table: dissGabarito.b_table },
-    { letter: 'c', label: 'Tratamento empírico', text: 'Qual o tratamento empírico imediato? Discuta o papel da dexametasona adjuvante e quando está indicada.', user: userC, gabarito: dissGabarito.c, table: null }
-  ];
+  const gab = currentProva === 2 ? dissGabarito2 : dissGabarito;
+  const dissQs = currentProva === 2 ? dissQuestions2 : dissQuestions1;
+  const userAnswers = { a: userA, b: userB, c: userC };
+
+  const questions_diss = dissQs.map(q => ({
+    letter: q.letter, label: q.label, text: q.text,
+    user: userAnswers[q.letter],
+    gabarito: gab[q.letter],
+    table: gab[q.letter + '_table'] || null
+  }));
 
   let html = `<h3 style="font-size:16px;color:#1e3a5f;margin-bottom:18px;font-weight:700;">Gabarito comentado — comparação com sua resposta</h3>`;
 
@@ -832,17 +1106,6 @@ function restartQuiz() {
   document.getElementById('resultsScreen').style.display = 'none';
   document.getElementById('dissertationScreen').style.display = 'none';
   document.getElementById('startScreen').style.display = 'block';
-  document.getElementById('dissQuestionsForm').style.display = 'block';
-  document.getElementById('dissComparison').style.display = 'none';
-  document.getElementById('dissComparison').innerHTML = '';
-  document.getElementById('btnToDissResults').style.display = 'none';
-  document.getElementById('btnConfirm').style.display = 'block';
-  document.getElementById('btnConfirm').disabled = true;
-  ['answerA','answerB','answerC'].forEach(id => {
-    const el = document.getElementById(id);
-    el.value = ''; el.disabled = false;
-    el.classList.remove('filled');
-  });
   window.scrollTo(0, 0);
 }
 </script>
