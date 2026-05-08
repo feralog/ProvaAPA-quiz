@@ -464,43 +464,43 @@ const rawQuestions = [
     explanation: `A paciente tem ICD grave (leucocitose > 15.000 + creatinina ≥ 1,5× basal). O tratamento atual de 1ª linha é vancomicina oral 125 mg 6/6h × 10 dias (ou fidaxomicina), com descontinuação do antibiótico desencadeante. A é incorreta e perigosa: loperamida está contraindicado pelo risco de megacólon tóxico. B reflete recomendação obsoleta — metronidazol tem eficácia inferior. D é desnecessária: diagnóstico já confirmado pela toxina + GDH. E é grave erro: ciprofloxacino é um dos antibióticos que mais induzem ICD.`
   },
   {
-    id: "Q4", area: "Gastroenterologia",
-    stem: `Mulher de 28 anos refere diarreia crônica há 8 meses, com 4–5 evacuações pastosas/dia, distensão abdominal, perda ponderal de 6 kg e episódios de aftas orais. Exame físico: IMC 19,2 kg/m²; palidez cutâneo-mucosa. Exames: Hb 9,8 g/dL (VCM 76 fL); ferritina 8 ng/mL; albumina 3,2 g/dL; anti-transglutaminase IgA fortemente positivo; IgA total normal. Endoscopia digestiva alta com biópsia de duodeno: atrofia vilositária subtotal e linfocitose intraepitelial. Qual é o diagnóstico e conduta?`,
+    id: "Q4", area: "Infectologia",
+    stem: `Homem de 38 anos, gari, é admitido no pronto-socorro com febre alta de início abrupto há 5 dias, cefaleia intensa, mialgia importante (refere dor "insuportável" em panturrilhas), náuseas e dois episódios de vômitos. Trabalhou na limpeza de bueiros após enchente recente em sua cidade. Ao exame: febril (39,1 °C), prostrado, com sufusão conjuntival bilateral marcante e dor à palpação das panturrilhas; sem icterícia, sem rash. Exames: leucócitos 14.500/mm³ com neutrofilia e desvio à esquerda; plaquetas 138.000; CPK 2.840 U/L; creatinina 1,4 mg/dL; bilirrubinas normais; TGO/TGP levemente elevadas. Diante da suspeita clínica, qual a conduta diagnóstica MAIS adequada neste momento?`,
     options: [
-      "Doença de Crohn ileal — iniciar mesalazina e corticoide.",
-      "Síndrome do intestino irritável com predomínio diarreico — orientar dieta FODMAP.",
-      "Doença celíaca — instituir dieta sem glúten estrita e seguimento.",
-      "Giardíase crônica — tratar com metronidazol por 7 dias.",
-      "Supercrescimento bacteriano (SIBO) — iniciar rifaximina."
+      "Solicitar hemocultura em meio específico (Fletcher/EMJH) e PCR sanguíneo para Leptospira, reservando a sorologia (MAT/ELISA IgM) para repetição após o 7º dia de doença.",
+      "Solicitar microaglutinação (MAT) imediatamente, considerando título isolado ≥ 1:100 como confirmatório do diagnóstico nesta fase da doença.",
+      "Solicitar apenas ELISA IgM para Leptospira, suficiente para confirmar o diagnóstico já no 5º dia de sintomas, sem necessidade de exames adicionais.",
+      "Solicitar sorologia para dengue (NS1 e IgM) como exame inicial isolado, dado que a clínica de febre, mialgia e plaquetopenia é praticamente patognomônica de arbovirose.",
+      "Solicitar urocultura para Leptospira e gota espessa para malária como abordagem inicial, já que a leptospirúria é detectável desde o primeiro dia de doença."
     ],
-    correctIndex: 2,
-    explanation: `O quadro reúne os elementos clássicos da doença celíaca: diarreia com má absorção (perda ponderal, anemia ferropriva, hipoalbuminemia), aftas orais, anti-tTG IgA positivo com IgA total normal e biópsia com atrofia vilositária + linfocitose intraepitelial (Marsh III). O tratamento é dieta sem glúten estrita e vitalícia. A (Crohn) não tem essa sorologia nem histologia. B (SII) não cursa com perda ponderal, anemia ou alteração histológica. D (Giardíase) pode dar má absorção, mas não atrofia vilositária extensa nem essa sorologia. E (SIBO) é diagnosticado por teste respiratório, não tem esse perfil sorológico.`
+    correctIndex: 0,
+    explanation: `O paciente apresenta quadro clássico de leptospirose na fase leptospirêmica/septicêmica (até o 7º dia): exposição epidemiológica típica (gari + enchente), febre abrupta, cefaleia, mialgia intensa em panturrilhas e sufusão conjuntival (sinal de Rosenbach), com elevação importante de CPK (miosite). Nesta fase precoce, o diagnóstico de escolha é a pesquisa direta do agente — hemocultura em meio especial (Fletcher/EMJH) ou PCR sanguíneo, que apresentam alta sensibilidade na primeira semana; a sorologia ainda não soroconverteu e deve ser reservada para amostras a partir do 7º–10º dia. B erra no ponto de corte: título confirmatório por MAT é ≥ 1:800 (não 1:100), e além disso a sorologia não é o teste de escolha na fase precoce. C é incorreta: ELISA IgM tem desempenho limitado antes do 7º dia (período de janela imunológica) e deve ser confirmado por MAT. D é incorreta: mialgia incapacitante de panturrilhas + sufusão conjuntival + CPK muito elevada + epidemiologia ocupacional apontam fortemente para leptospirose. E está errada: a leptospirúria começa de forma consistente apenas após a fase leptospirêmica (segunda semana), não sendo útil no 5º dia.`
   },
   {
-    id: "Q5", area: "Gastroenterologia",
-    stem: `Homem de 67 anos comparece à emergência com febre 39 °C, calafrios, icterícia progressiva e dor intensa em hipocôndrio direito há 24 horas. PA: 92/58 mmHg; FC: 118 bpm; Glasgow 13. Exames: leucócitos 19.000/mm³; bilirrubina total 8,2 mg/dL (direta 6,8); fosfatase alcalina 480 U/L; GGT 720 U/L; creatinina 1,9 mg/dL (basal 0,9). USG abdominal: dilatação de vias biliares intra e extra-hepáticas com cálculo no colédoco distal. Qual é a conduta correta?`,
+    id: "Q5", area: "Infectologia",
+    stem: `Mulher de 24 anos é trazida ao pronto-socorro com febre de 39 °C, cefaleia holocraniana intensa, vômitos em jato e rigidez de nuca há 24 horas. Glasgow 14, sem déficits focais. Após avaliação inicial, é submetida a punção lombar, com os seguintes achados no líquor: aspecto turvo; pressão de abertura elevada; 2.400 células/mm³ com 92% de polimorfonucleares; proteína 220 mg/dL; glicose liquórica 18 mg/dL (glicemia sérica simultânea 110 mg/dL); lactato liquórico elevado; bacterioscopia pelo Gram em andamento. Qual a interpretação mais adequada deste padrão liquórico?`,
     options: [
-      "Antibioticoterapia oral ambulatorial e colecistectomia eletiva em 4–6 semanas.",
-      "Apenas hidratação venosa e observação clínica, reservando antibiótico se houver piora.",
-      "Antibioticoterapia IV de amplo espectro e colecistectomia laparoscópica imediata.",
-      "Antibioticoterapia IV de amplo espectro e CPRE de urgência para descompressão biliar.",
-      "Antibioticoterapia oral e colangiorressonância nas próximas 48–72 horas."
+      "Padrão típico de meningite bacteriana aguda — iniciar imediatamente antibioticoterapia empírica e dexametasona adjuvante, sem aguardar a cultura.",
+      "Padrão compatível com meningite viral — manter conduta sintomática e observação clínica, com reavaliação em 24 horas.",
+      "Padrão sugestivo de meningite tuberculosa — solicitar ADA e BAAR no líquor e iniciar esquema RIPE empiricamente.",
+      "Padrão típico de meningite fúngica por Criptococo — solicitar tinta da China e antígeno criptocócico antes de qualquer terapia.",
+      "Padrão compatível com hemorragia subaracnóidea — solicitar tomografia de crânio e angiografia cerebral em caráter de urgência."
     ],
-    correctIndex: 3,
-    explanation: `O paciente tem colangite aguda grave com pêntade de Reynolds (tríade de Charcot + hipotensão + alteração de consciência) e disfunção renal. A coledocolitíase é a causa em ~85% dos casos. A conduta combina antibioticoterapia IV imediata (piperacilina-tazobactam ou cef 3ª geração + metronidazol) com CPRE de urgência para descompressão biliar — procedimento de escolha. A, B e E erram pela gravidade: paciente em sepse com disfunção orgânica não tolera conduta ambulatorial ou expectante. C é incorreta: colecistectomia não desobstrui o colédoco e não é o procedimento de descompressão; ela é programada eletivamente após resolução do quadro agudo.`
+    correctIndex: 0,
+    explanation: `O líquor descrito é o padrão clássico de meningite bacteriana aguda: aspecto turvo/purulento, pressão muito elevada, pleocitose intensa (> 1.000 células/mm³) com franco predomínio de PMN, hiperproteinorraquia significativa (> 100 mg/dL) e hipoglicorraquia acentuada (glicose < 40 mg/dL e relação LCR/sérica < 0,4). A conduta correta é antibioticoterapia empírica imediata (ceftriaxona ± vancomicina) + dexametasona antes ou com a primeira dose, sem aguardar cultura. B é incorreta: meningite viral cursa com líquor límpido, celularidade menor (10–500), predomínio linfomononuclear, proteína < 100 e glicose normal. C não se aplica: TBC tem líquor límpido/xantocrômico, linfomononuclear, quadro mais arrastado. D é descartada: meningite criptocócica tem líquor límpido, celularidade baixa (20–200), linfomononucleares, em imunossuprimidos. E é incorreta: HSA cursa com líquor xantocrômico, eritrócitos uniformes nos três tubos e ausência de pleocitose neutrofílica e hipoglicorraquia.`
   },
   {
-    id: "Q6", area: "Nefrologia",
-    stem: `Homem de 58 anos é internado por pneumonia grave e choque séptico, requerendo noradrenalina e amicacina por 5 dias. No 6º dia, mesmo com PA estabilizada, evolui com oligúria (diurese 280 mL/24h) e creatinina de 3,4 mg/dL (admissão: 0,9 mg/dL). Exames urinários: FeNa 3,8%; osmolalidade urinária 290 mOsm/kg; sedimento com cilindros granulosos pigmentados; relação ureia/creatinina sérica 28; sem dilatação de vias urinárias na USG. Qual é o diagnóstico e conduta?`,
+    id: "Q6", area: "Infectologia",
+    stem: `Estudante universitária de 19 anos procura atendimento com história de febre baixa persistente há 10 dias, odinofagia importante, fadiga intensa e "ínguas no pescoço". Recebeu amoxicilina há 3 dias por suspeita de faringite bacteriana, evoluindo com surgimento de exantema maculopapular difuso 48 horas depois. Ao exame: faringotonsilite com exsudato esbranquiçado, linfadenopatia cervical posterior bilateral dolorosa, edema periorbitário discreto e esplenomegalia palpável a 3 cm do rebordo costal. Exames: leucócitos 16.800/mm³ com 68% de linfócitos, presença de 18% de linfócitos atípicos no esfregaço; plaquetas 165.000; TGO 142 U/L; TGP 168 U/L. Qual a conduta diagnóstica MAIS adequada?`,
     options: [
-      "IRA pré-renal por hipovolemia persistente — expandir com 30 mL/kg de cristaloide.",
-      "Necrose tubular aguda multifatorial (isquêmica + nefrotóxica por aminoglicosídeo) — suspender a amicacina e otimizar suporte.",
-      "Glomerulonefrite rapidamente progressiva — iniciar pulsoterapia com metilprednisolona empírica.",
-      "Nefrite intersticial aguda por droga — suspender todas as medicações e iniciar corticoide.",
-      "IRA pós-renal por obstrução — passar cateter vesical e solicitar tomografia de abdome."
+      "Solicitar teste heterófilo (Monospot/Paul-Bunnell); se negativo ou inconclusivo, complementar com sorologia EBV específica (VCA IgM, VCA IgG e anti-EBNA).",
+      "Solicitar apenas anti-EBNA isoladamente, considerando que sua positividade é o marcador mais sensível e precoce da infecção aguda por EBV.",
+      "Solicitar swab de orofaringe com cultura para Streptococcus do grupo A, suficiente para esclarecer o quadro e direcionar o tratamento antibiótico definitivo.",
+      "Solicitar sorologia para HIV (ELISA de 4ª geração) como exame inicial isolado, dada a alta especificidade do exantema pós-amoxicilina para infecção retroviral aguda.",
+      "Solicitar PCR para EBV no sangue periférico como exame de primeira linha, pois apresenta maior sensibilidade que a sorologia em pacientes imunocompetentes."
     ],
-    correctIndex: 1,
-    explanation: `O padrão é NTA mista — isquêmica (choque séptico prolongado) e nefrotóxica (amicacina acumula no túbulo proximal). Achados confirmatórios: FeNa > 2%, osmolalidade urinária ~290 mOsm/kg (perda da capacidade de concentração), ureia/creatinina < 40 (perda de reabsorção tubular preferencial de ureia) e cilindros granulosos pigmentados ("muddy brown casts"). Conduta: suspender o agente nefrotóxico + otimizar perfusão. A está errada: FeNa < 1% e osmolalidade alta seriam esperados no pré-renal. C requer hematúria e cilindros hemáticos. D requer tríade (febre + rash + eosinofilia) ou eosinofilúria, ausentes. E é descartada pela USG sem hidronefrose.`
+    correctIndex: 0,
+    explanation: `O quadro é altamente sugestivo de mononucleose infecciosa por EBV: tríade clássica (febre + faringotonsilite exsudativa + linfadenopatia cervical posterior), esplenomegalia, edema periorbitário (sinal de Hoagland), exantema desencadeado por aminopenicilina ("rash da mono"), linfocitose com linfócitos atípicos e hepatite leve. O algoritmo inicia pelo teste heterófilo (Monospot/Paul-Bunnell), com sensibilidade de 85–90% na 2ª semana; quando negativo ou atípico, complementa-se com sorologia EBV específica: VCA IgM (positivo na fase aguda), VCA IgG (persiste por toda a vida) e anti-EBNA (surge semanas a meses após — se positivo já no início indica infecção antiga). B é incorreta: anti-EBNA surge tardiamente, não é marcador precoce. C é incorreta: esplenomegalia, linfócitos atípicos e hepatite tornam improvável faringite estreptocócica isolada. D é incorreta: o exantema pós-amoxicilina é clássico da mononucleose por EBV, não específico de HIV. E é incorreta: PCR para EBV é reservada a imunossuprimidos; em imunocompetentes a abordagem inicial é sorológica.`
   },
   {
     id: "Q7", area: "Endocrinologia",
